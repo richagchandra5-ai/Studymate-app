@@ -1,0 +1,8 @@
+{
+  "name": "StudyMate",
+  "description": "Student-focused digital study planning platform for personalized timetables, subject & syllabus organization, revision tracking, and daily focus progress.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

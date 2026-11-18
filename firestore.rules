@@ -1,0 +1,317 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global safety net: default deny everything
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // Global Hardened Primitives
+    // -------------------------------------------------------------------------
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isVerifiedUser() && request.auth.uid == userId;
+    }
+
+    function isValidIsoDate(val) {
+      return val is string && val.size() == 10 && val.matches('^\\d{4}-\\d{2}-\\d{2}$');
+    }
+
+    function isValidOptionalIsoDate(val) {
+      return val is string && (val == '' || (val.size() == 10 && val.matches('^\\d{4}-\\d{2}-\\d{2}$')));
+    }
+
+    // -------------------------------------------------------------------------
+    // Entity Validation Blueprints
+    // -------------------------------------------------------------------------
+    function isValidUserProfile(data, userId) {
+      return data.keys().hasAll([
+        'uid', 'displayName', 'email', 'university', 'program',
+        'dailyGoalMinutes', 'planTier', 'onboardingComplete', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'uid', 'displayName', 'email', 'university', 'program',
+        'dailyGoalMinutes', 'planTier', 'onboardingComplete', 'createdAt', 'updatedAt'
+      ]) &&
+      data.uid == userId &&
+      data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 &&
+      data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100 &&
+      data.email is string && data.email.size() >= 3 && data.email.size() <= 160 &&
+      data.university is string && data.university.size() >= 1 && data.university.size() <= 140 &&
+      data.program is string && data.program.size() >= 1 && data.program.size() <= 100 &&
+      data.dailyGoalMinutes is number && data.dailyGoalMinutes >= 30 && data.dailyGoalMinutes <= 720 &&
+      data.planTier in ['free', 'plus'] &&
+      data.onboardingComplete is bool &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidSubject(data, userId) {
+      return data.keys().hasAll([
+        'ownerId', 'name', 'code', 'color', 'examDate',
+        'totalTopics', 'completedTopics', 'priority', 'notesSummary', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'ownerId', 'name', 'code', 'color', 'examDate',
+        'totalTopics', 'completedTopics', 'priority', 'notesSummary', 'createdAt', 'updatedAt'
+      ]) &&
+      data.ownerId == userId &&
+      data.name is string && data.name.size() >= 1 && data.name.size() <= 100 &&
+      data.code is string && data.code.size() >= 1 && data.code.size() <= 24 &&
+      data.color in ['cobalt', 'emerald', 'amber', 'rose', 'teal', 'slate'] &&
+      isValidOptionalIsoDate(data.examDate) &&
+      data.totalTopics is number && data.totalTopics >= 1 && data.totalTopics <= 500 &&
+      data.completedTopics is number && data.completedTopics >= 0 && data.completedTopics <= data.totalTopics &&
+      data.priority in ['high', 'medium', 'low'] &&
+      data.notesSummary is string && data.notesSummary.size() <= 500 &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidScheduleBlock(data, userId) {
+      return data.keys().hasAll([
+        'ownerId', 'subjectId', 'subjectName', 'title', 'dayOfWeek',
+        'startTime', 'durationMinutes', 'blockType', 'lastCompletedDate', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'ownerId', 'subjectId', 'subjectName', 'title', 'dayOfWeek',
+        'startTime', 'durationMinutes', 'blockType', 'lastCompletedDate', 'createdAt', 'updatedAt'
+      ]) &&
+      data.ownerId == userId &&
+      isValidId(data.subjectId) &&
+      data.subjectName is string && data.subjectName.size() >= 1 && data.subjectName.size() <= 100 &&
+      data.title is string && data.title.size() >= 1 && data.title.size() <= 120 &&
+      data.dayOfWeek in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'] &&
+      data.startTime is string && data.startTime.size() == 5 && data.startTime.matches('^([01]\\d|2[0-3]):[0-5]\\d$') &&
+      data.durationMinutes is number && data.durationMinutes >= 15 && data.durationMinutes <= 360 &&
+      data.blockType in ['study', 'revision', 'assignment', 'exam-prep'] &&
+      isValidOptionalIsoDate(data.lastCompletedDate) &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidStudyTask(data, userId) {
+      return data.keys().hasAll([
+        'ownerId', 'subjectId', 'subjectName', 'title', 'category',
+        'dueDate', 'priority', 'status', 'revisionStage', 'notes', 'createdAt', 'updatedAt'
+      ]) &&
+      data.keys().hasOnly([
+        'ownerId', 'subjectId', 'subjectName', 'title', 'category',
+        'dueDate', 'priority', 'status', 'revisionStage', 'notes', 'createdAt', 'updatedAt'
+      ]) &&
+      data.ownerId == userId &&
+      isValidId(data.subjectId) &&
+      data.subjectName is string && data.subjectName.size() >= 1 && data.subjectName.size() <= 100 &&
+      data.title is string && data.title.size() >= 1 && data.title.size() <= 140 &&
+      data.category in ['assignment', 'revision', 'exam'] &&
+      isValidIsoDate(data.dueDate) &&
+      data.priority in ['high', 'medium', 'low'] &&
+      data.status in ['pending', 'in-progress', 'completed'] &&
+      data.revisionStage is number && data.revisionStage >= 0 && data.revisionStage <= 3 &&
+      data.notes is string && data.notes.size() <= 400 &&
+      data.createdAt is timestamp &&
+      data.updatedAt is timestamp;
+    }
+
+    function isValidStudySession(data, userId) {
+      return data.keys().hasAll([
+        'ownerId', 'subjectId', 'subjectName', 'durationMinutes',
+        'sessionDate', 'focusMode', 'notes', 'createdAt'
+      ]) &&
+      data.keys().hasOnly([
+        'ownerId', 'subjectId', 'subjectName', 'durationMinutes',
+        'sessionDate', 'focusMode', 'notes', 'createdAt'
+      ]) &&
+      data.ownerId == userId &&
+      isValidId(data.subjectId) &&
+      data.subjectName is string && data.subjectName.size() >= 1 && data.subjectName.size() <= 100 &&
+      data.durationMinutes is number && data.durationMinutes >= 1 && data.durationMinutes <= 480 &&
+      isValidIsoDate(data.sessionDate) &&
+      data.focusMode in ['pomodoro', 'deep-work', 'quick-review'] &&
+      data.notes is string && data.notes.size() <= 300 &&
+      data.createdAt is timestamp;
+    }
+
+    function isValidPilotFeedback(data) {
+      return data.keys().hasAll([
+        'ownerId', 'university', 'biggestChallenge', 'willingnessToPay', 'rating', 'comments', 'createdAt'
+      ]) &&
+      data.keys().hasOnly([
+        'ownerId', 'university', 'biggestChallenge', 'willingnessToPay', 'rating', 'comments', 'createdAt'
+      ]) &&
+      isValidId(data.ownerId) &&
+      data.university is string && data.university.size() >= 1 && data.university.size() <= 140 &&
+      data.biggestChallenge is string && data.biggestChallenge.size() >= 1 && data.biggestChallenge.size() <= 200 &&
+      data.willingnessToPay in ['free-only', 'inr-49', 'inr-99'] &&
+      data.rating is number && data.rating >= 1 && data.rating <= 5 &&
+      data.comments is string && data.comments.size() <= 500 &&
+      data.createdAt is timestamp;
+    }
+
+    // -------------------------------------------------------------------------
+    // User Profiles & Subcollections (Strict Owner Isolation + Master Gate)
+    // -------------------------------------------------------------------------
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if false;
+
+      allow create: if isOwner(userId) &&
+        isValidId(userId) &&
+        isValidUserProfile(incoming(), userId) &&
+        incoming().createdAt == request.time &&
+        incoming().updatedAt == request.time;
+
+      allow update: if isOwner(userId) &&
+        isValidId(userId) &&
+        isValidUserProfile(incoming(), userId) &&
+        incoming().uid == existing().uid &&
+        incoming().createdAt == existing().createdAt &&
+        incoming().updatedAt == request.time &&
+        (
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'displayName', 'university', 'program', 'dailyGoalMinutes', 'onboardingComplete', 'updatedAt'
+          ]) ||
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'planTier', 'updatedAt'
+          ])
+        );
+
+      allow delete: if false;
+
+      match /subjects/{subjectId} {
+        allow get: if isOwner(userId) && isValidId(subjectId);
+        allow list: if isOwner(userId) && resource.data.ownerId == request.auth.uid;
+
+        allow create: if isOwner(userId) &&
+          isValidId(subjectId) &&
+          isValidSubject(incoming(), userId) &&
+          incoming().createdAt == request.time &&
+          incoming().updatedAt == request.time;
+
+        allow update: if isOwner(userId) &&
+          isValidId(subjectId) &&
+          isValidSubject(incoming(), userId) &&
+          incoming().ownerId == existing().ownerId &&
+          incoming().createdAt == existing().createdAt &&
+          incoming().updatedAt == request.time &&
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'name', 'code', 'color', 'examDate', 'totalTopics', 'completedTopics', 'priority', 'notesSummary', 'updatedAt'
+          ]);
+
+        allow delete: if isOwner(userId) && isValidId(subjectId);
+      }
+
+      match /scheduleBlocks/{blockId} {
+        allow get: if isOwner(userId) && isValidId(blockId);
+        allow list: if isOwner(userId) && resource.data.ownerId == request.auth.uid;
+
+        allow create: if isOwner(userId) &&
+          isValidId(blockId) &&
+          isValidScheduleBlock(incoming(), userId) &&
+          incoming().createdAt == request.time &&
+          incoming().updatedAt == request.time &&
+          existsAfter(/databases/$(database)/documents/users/$(userId)/subjects/$(incoming().subjectId));
+
+        allow update: if isOwner(userId) &&
+          isValidId(blockId) &&
+          isValidScheduleBlock(incoming(), userId) &&
+          incoming().ownerId == existing().ownerId &&
+          incoming().createdAt == existing().createdAt &&
+          incoming().updatedAt == request.time &&
+          (
+            (
+              incoming().diff(existing()).affectedKeys().hasOnly([
+                'subjectId', 'subjectName', 'title', 'dayOfWeek', 'startTime', 'durationMinutes', 'blockType', 'updatedAt'
+              ]) &&
+              existsAfter(/databases/$(database)/documents/users/$(userId)/subjects/$(incoming().subjectId))
+            ) ||
+            incoming().diff(existing()).affectedKeys().hasOnly(['lastCompletedDate', 'updatedAt'])
+          );
+
+        allow delete: if isOwner(userId) && isValidId(blockId);
+      }
+
+      match /tasks/{taskId} {
+        allow get: if isOwner(userId) && isValidId(taskId);
+        allow list: if isOwner(userId) && resource.data.ownerId == request.auth.uid;
+
+        allow create: if isOwner(userId) &&
+          isValidId(taskId) &&
+          isValidStudyTask(incoming(), userId) &&
+          incoming().createdAt == request.time &&
+          incoming().updatedAt == request.time &&
+          existsAfter(/databases/$(database)/documents/users/$(userId)/subjects/$(incoming().subjectId));
+
+        allow update: if isOwner(userId) &&
+          isValidId(taskId) &&
+          isValidStudyTask(incoming(), userId) &&
+          incoming().ownerId == existing().ownerId &&
+          incoming().createdAt == existing().createdAt &&
+          incoming().updatedAt == request.time &&
+          (
+            (
+              incoming().diff(existing()).affectedKeys().hasOnly([
+                'subjectId', 'subjectName', 'title', 'category', 'dueDate', 'priority', 'notes', 'updatedAt'
+              ]) &&
+              existsAfter(/databases/$(database)/documents/users/$(userId)/subjects/$(incoming().subjectId))
+            ) ||
+            incoming().diff(existing()).affectedKeys().hasOnly(['status', 'revisionStage', 'updatedAt'])
+          );
+
+        allow delete: if isOwner(userId) && isValidId(taskId);
+      }
+
+      match /studySessions/{sessionId} {
+        allow get: if isOwner(userId) && isValidId(sessionId);
+        allow list: if isOwner(userId) && resource.data.ownerId == request.auth.uid;
+
+        allow create: if isOwner(userId) &&
+          isValidId(sessionId) &&
+          isValidStudySession(incoming(), userId) &&
+          incoming().createdAt == request.time &&
+          existsAfter(/databases/$(database)/documents/users/$(userId)/subjects/$(incoming().subjectId));
+
+        allow update: if false;
+        allow delete: if isOwner(userId) && isValidId(sessionId);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // Campus Pilot Feedback
+    // -------------------------------------------------------------------------
+    match /pilotFeedback/{feedbackId} {
+      allow get: if isVerifiedUser() && isValidId(feedbackId) && existing().ownerId == request.auth.uid;
+      allow list: if isVerifiedUser() && resource.data.ownerId == request.auth.uid;
+
+      allow create: if isVerifiedUser() &&
+        isValidId(feedbackId) &&
+        isValidPilotFeedback(incoming()) &&
+        incoming().ownerId == request.auth.uid &&
+        incoming().createdAt == request.time;
+
+      allow update, delete: if false;
+    }
+  }
+}

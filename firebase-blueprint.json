@@ -1,0 +1,423 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Student account profile, academic context, daily goal, and subscription tier.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "university": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 140
+        },
+        "program": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "dailyGoalMinutes": {
+          "type": "number"
+        },
+        "planTier": {
+          "type": "string",
+          "enum": ["free", "plus"]
+        },
+        "onboardingComplete": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "email",
+        "university",
+        "program",
+        "dailyGoalMinutes",
+        "planTier",
+        "onboardingComplete",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Subject": {
+      "title": "Subject",
+      "description": "An academic subject managed by a student with syllabus tracking and exam date.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 24
+        },
+        "color": {
+          "type": "string",
+          "enum": ["cobalt", "emerald", "amber", "rose", "teal", "slate"]
+        },
+        "examDate": {
+          "type": "string",
+          "maxLength": 10,
+          "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$"
+        },
+        "totalTopics": {
+          "type": "number"
+        },
+        "completedTopics": {
+          "type": "number"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["high", "medium", "low"]
+        },
+        "notesSummary": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "name",
+        "code",
+        "color",
+        "examDate",
+        "totalTopics",
+        "completedTopics",
+        "priority",
+        "notesSummary",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ScheduleBlock": {
+      "title": "ScheduleBlock",
+      "description": "A recurring weekly study timetable block for a subject.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "subjectName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "dayOfWeek": {
+          "type": "string",
+          "enum": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        },
+        "startTime": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 5,
+          "pattern": "^\\d{2}:\\d{2}$"
+        },
+        "durationMinutes": {
+          "type": "number"
+        },
+        "blockType": {
+          "type": "string",
+          "enum": ["study", "revision", "assignment", "exam-prep"]
+        },
+        "lastCompletedDate": {
+          "type": "string",
+          "maxLength": 10,
+          "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "subjectId",
+        "subjectName",
+        "title",
+        "dayOfWeek",
+        "startTime",
+        "durationMinutes",
+        "blockType",
+        "lastCompletedDate",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "StudyTask": {
+      "title": "StudyTask",
+      "description": "An assignment, revision cycle, or exam preparation task.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "subjectName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 140
+        },
+        "category": {
+          "type": "string",
+          "enum": ["assignment", "revision", "exam"]
+        },
+        "dueDate": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["high", "medium", "low"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "in-progress", "completed"]
+        },
+        "revisionStage": {
+          "type": "number"
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 400
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "subjectId",
+        "subjectName",
+        "title",
+        "category",
+        "dueDate",
+        "priority",
+        "status",
+        "revisionStage",
+        "notes",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "StudySession": {
+      "title": "StudySession",
+      "description": "A logged focus study session contributing to daily study goals.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "subjectName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "durationMinutes": {
+          "type": "number"
+        },
+        "sessionDate": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 10,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "focusMode": {
+          "type": "string",
+          "enum": ["pomodoro", "deep-work", "quick-review"]
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "subjectId",
+        "subjectName",
+        "durationMinutes",
+        "sessionDate",
+        "focusMode",
+        "notes",
+        "createdAt"
+      ]
+    },
+    "PilotFeedback": {
+      "title": "PilotFeedback",
+      "description": "Student pilot feedback and willingness-to-pay survey response.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "university": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 140
+        },
+        "biggestChallenge": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "willingnessToPay": {
+          "type": "string",
+          "enum": ["free-only", "inr-49", "inr-99"]
+        },
+        "rating": {
+          "type": "number"
+        },
+        "comments": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "university",
+        "biggestChallenge",
+        "willingnessToPay",
+        "rating",
+        "comments",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Private student profile and academic settings isolated to the authenticated owner."
+    },
+    "/users/{userId}/subjects/{subjectId}": {
+      "schema": {
+        "$ref": "#/entities/Subject"
+      },
+      "description": "Student subjects with syllabus progress and exam dates."
+    },
+    "/users/{userId}/scheduleBlocks/{blockId}": {
+      "schema": {
+        "$ref": "#/entities/ScheduleBlock"
+      },
+      "description": "Personalized weekly timetable blocks owned by the student."
+    },
+    "/users/{userId}/tasks/{taskId}": {
+      "schema": {
+        "$ref": "#/entities/StudyTask"
+      },
+      "description": "Assignments, revision milestones, and exam prep tasks owned by the student."
+    },
+    "/users/{userId}/studySessions/{sessionId}": {
+      "schema": {
+        "$ref": "#/entities/StudySession"
+      },
+      "description": "Completed study focus sessions owned by the student."
+    },
+    "/pilotFeedback/{feedbackId}": {
+      "schema": {
+        "$ref": "#/entities/PilotFeedback"
+      },
+      "description": "Student feedback submissions for StudyMate campus validation."
+    }
+  }
+}
