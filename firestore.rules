@@ -53,7 +53,7 @@ service cloud.firestore {
       ]) &&
       data.keys().hasOnly([
         'uid', 'displayName', 'email', 'university', 'program',
-        'dailyGoalMinutes', 'planTier', 'onboardingComplete', 'createdAt', 'updatedAt'
+        'dailyGoalMinutes', 'planTier', 'onboardingComplete', 'theme', 'createdAt', 'updatedAt'
       ]) &&
       data.uid == userId &&
       data.uid is string && data.uid.size() >= 1 && data.uid.size() <= 128 &&
@@ -64,6 +64,7 @@ service cloud.firestore {
       data.dailyGoalMinutes is number && data.dailyGoalMinutes >= 30 && data.dailyGoalMinutes <= 720 &&
       data.planTier in ['free', 'plus'] &&
       data.onboardingComplete is bool &&
+      (!('theme' in data) || data.theme in ['pastel-dream', 'sunset-peach', 'mint-garden']) &&
       data.createdAt is timestamp &&
       data.updatedAt is timestamp;
     }
@@ -195,6 +196,9 @@ service cloud.firestore {
           ]) ||
           incoming().diff(existing()).affectedKeys().hasOnly([
             'planTier', 'updatedAt'
+          ]) ||
+          incoming().diff(existing()).affectedKeys().hasOnly([
+            'theme', 'updatedAt'
           ])
         );
 

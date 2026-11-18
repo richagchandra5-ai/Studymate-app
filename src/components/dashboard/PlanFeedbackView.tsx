@@ -12,6 +12,7 @@ import {
   updatePlanTier,
   updateUserProfileDetails,
 } from '../../services/studymateService';
+import { ThemePickerTable } from '../ThemePickerTable';
 
 interface PlanFeedbackViewProps {
   profile: UserProfile;
@@ -99,13 +100,16 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
         </p>
       </div>
 
+      {/* Cute Color Theme Table */}
+      <ThemePickerTable uid={profile.uid} />
+
       {/* Subscription Tier Cards */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div
           className={`bg-white rounded-3xl p-6 flex flex-col justify-between space-y-4 hover-lift ${
             profile.planTier === 'free'
               ? 'border-2 border-emerald-500'
-              : 'border border-violet-200'
+              : 'border border-sm'
           }`}
         >
           <div className="space-y-2">
@@ -127,7 +131,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
             className={`w-full py-2.5 px-4 text-xs font-semibold rounded-2xl transition-colors ${
               profile.planTier === 'free'
                 ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 cursor-default'
-                : 'bg-white border border-violet-200 text-slate-800 hover:bg-violet-50'
+                : 'bg-white border border-sm text-slate-800 hover:bg-sm-soft'
             }`}
           >
             {profile.planTier === 'free' ? 'Current Active Plan ✅' : 'Switch to Basic Free'}
@@ -135,16 +139,16 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
         </div>
 
         <div
-          className={`bg-gradient-to-br from-white to-violet-50/70 rounded-3xl p-6 flex flex-col justify-between space-y-4 hover-lift ${
+          className={`bg-white rounded-3xl p-6 flex flex-col justify-between space-y-4 hover-lift ${
             profile.planTier === 'plus'
-              ? 'border-2 border-violet-600'
-              : 'border border-violet-200'
+              ? 'border-2 border-sm-accent'
+              : 'border border-sm'
           }`}
         >
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-bold text-slate-900">✨ Student Plus</h2>
-              <span className="font-mono text-lg font-bold text-violet-700 tabular-nums">
+              <span className="font-mono text-lg font-bold text-sm-accent tabular-nums">
                 ₹49 / mo
               </span>
             </div>
@@ -159,7 +163,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
             className={`w-full py-2.5 px-4 text-xs font-semibold rounded-2xl transition-colors ${
               profile.planTier === 'plus'
                 ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 cursor-default'
-                : 'bg-violet-600 hover:bg-violet-700 text-white'
+                : 'bg-sm-accent text-white'
             }`}
           >
             {profile.planTier === 'plus'
@@ -171,7 +175,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Profile Form */}
-        <section className="bg-white border border-violet-200/80 rounded-3xl p-6 space-y-4">
+        <section className="bg-white border border-sm rounded-3xl p-6 space-y-4">
           <h2 className="font-display text-lg font-bold text-slate-900">
             🎓 Student Academic Profile
           </h2>
@@ -184,7 +188,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 maxLength={SCHEMA_LIMITS.DISPLAY_NAME_MAX}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl"
               />
             </div>
 
@@ -198,7 +202,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 maxLength={SCHEMA_LIMITS.UNIVERSITY_MAX}
                 value={university}
                 onChange={(e) => setUniversity(e.target.value)}
-                className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl"
               />
             </div>
 
@@ -211,7 +215,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                   maxLength={SCHEMA_LIMITS.PROGRAM_MAX}
                   value={program}
                   onChange={(e) => setProgram(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl"
                 />
               </div>
 
@@ -227,7 +231,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                   required
                   value={dailyGoalMinutes}
                   onChange={(e) => setDailyGoalMinutes(Number(e.target.value))}
-                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
+                  className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl font-mono"
                 />
               </div>
             </div>
@@ -246,7 +250,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
               <button
                 type="submit"
                 disabled={savingProfile}
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-xl disabled:opacity-60"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-sm-accent rounded-xl disabled:opacity-60"
               >
                 {savingProfile && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 Save Profile
@@ -256,7 +260,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
         </section>
 
         {/* Campus Pilot Validation Form */}
-        <section className="bg-white border border-violet-200/80 rounded-3xl p-6 space-y-4">
+        <section className="bg-white border border-sm rounded-3xl p-6 space-y-4">
           <div>
             <h2 className="font-display text-lg font-bold text-slate-900">
               💌 Campus Pilot Feedback Survey
@@ -277,7 +281,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 maxLength={SCHEMA_LIMITS.FEEDBACK_CHALLENGE_MAX}
                 value={biggestChallenge}
                 onChange={(e) => setBiggestChallenge(e.target.value)}
-                className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl"
               />
             </div>
 
@@ -289,7 +293,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 <select
                   value={willingnessToPay}
                   onChange={(e) => setWillingnessToPay(e.target.value as WillingnessToPay)}
-                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl"
                 >
                   <option value="free-only">Prefer Free Basic Tier</option>
                   <option value="inr-49">Would pay ₹49 / month</option>
@@ -304,7 +308,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 <select
                   value={rating}
                   onChange={(e) => setRating(Number(e.target.value))}
-                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
+                  className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl font-mono"
                 >
                   <option value={5}>5 — Super Useful 🌟</option>
                   <option value={4}>4 — Useful ✨</option>
@@ -325,7 +329,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 value={comments}
                 onChange={(e) => setComments(e.target.value)}
                 placeholder="What would make StudyMate indispensable during semester exams?"
-                className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl"
               />
             </div>
 

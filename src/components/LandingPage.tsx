@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { User } from 'firebase/auth';
 import { OwlAvatar } from './OwlMascot';
+import { ThemePickerTable } from './ThemePickerTable';
 
 interface LandingPageProps {
   currentUser: User | null;
@@ -178,14 +179,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   const completedCount = activeBlocks.filter((b) => checkedBlocks[b.id]).length;
 
   return (
-    <div className="min-h-screen bg-[#FAF8FF] text-slate-800 flex flex-col">
+    <div className="min-h-screen bg-sm-canvas text-slate-800 flex flex-col">
       {/* Top Bar Contract: 3 zones separated by gap-8 */}
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-violet-100">
+      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-sm-subtle">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-8">
           {/* Zone 1: Single text element wordmark */}
           <a
             href="#top"
-            className="font-display text-xl font-bold tracking-tight text-violet-950 whitespace-nowrap shrink-0"
+            className="font-display text-xl font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0"
           >
             🦉 StudyMate
           </a>
@@ -194,25 +195,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
             <a
               href="#features"
-              className="hover:text-violet-700 hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+              className="hover:text-sm-accent hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
               Features
             </a>
             <a
               href="#comparison"
-              className="hover:text-violet-700 hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+              className="hover:text-sm-accent hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
               Why StudyMate
             </a>
             <a
               href="#pricing"
-              className="hover:text-violet-700 hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+              className="hover:text-sm-accent hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
               Pricing
             </a>
             <a
               href="#pilot"
-              className="hover:text-violet-700 hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
+              className="hover:text-sm-accent hover:underline underline-offset-4 transition-colors whitespace-nowrap shrink-0"
             >
               Campus Pilot
             </a>
@@ -223,7 +224,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               type="button"
               onClick={() => (currentUser ? onOpenDashboard() : onOpenAuth('signin'))}
-              className="px-4 py-2 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
+              className="px-4 py-2 text-sm font-semibold text-white bg-sm-accent rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
             >
               {currentUser ? 'Open Dashboard' : 'Sign In'}
             </button>
@@ -231,7 +232,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               type="button"
               onClick={() => setMobileMenuOpen((prev) => !prev)}
               aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
-              className="md:hidden p-2 text-slate-700 hover:bg-violet-50 rounded-xl"
+              className="md:hidden p-2 text-slate-700 hover:bg-sm-soft rounded-xl"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -240,32 +241,32 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
         {/* Mobile navigation drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-violet-100 bg-white px-4 py-3 flex flex-col gap-2">
+          <div className="md:hidden border-t border-sm-subtle bg-white px-4 py-3 flex flex-col gap-2">
             <a
               href="#features"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-2 text-sm font-medium text-slate-700 hover:text-violet-700"
+              className="py-2 text-sm font-medium text-slate-700 hover:text-sm-accent"
             >
               ✨ Features
             </a>
             <a
               href="#comparison"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-2 text-sm font-medium text-slate-700 hover:text-violet-700"
+              className="py-2 text-sm font-medium text-slate-700 hover:text-sm-accent"
             >
               💡 Why StudyMate
             </a>
             <a
               href="#pricing"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-2 text-sm font-medium text-slate-700 hover:text-violet-700"
+              className="py-2 text-sm font-medium text-slate-700 hover:text-sm-accent"
             >
               🎒 Pricing
             </a>
             <a
               href="#pilot"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-2 text-sm font-medium text-slate-700 hover:text-violet-700"
+              className="py-2 text-sm font-medium text-slate-700 hover:text-sm-accent"
             >
               🎓 Campus Pilot
             </a>
@@ -275,12 +276,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
       <main id="top" className="flex-1">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-violet-50/80 via-rose-50/35 to-[#FAF8FF] border-b border-violet-100">
+        <section className="bg-sm-hero border-b border-sm-subtle">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 lg:py-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-stretch">
               {/* Left Proposition */}
               <div className="lg:col-span-6 flex flex-col justify-center space-y-6">
-                <p className="text-xs font-semibold text-violet-700 tracking-wide">
+                <p className="text-xs font-semibold text-sm-accent tracking-wide">
                   🎓 Dehradun Campus Edition · Cozy & Organized Student Planner
                 </p>
                 <h1 className="font-display text-[clamp(2.15rem,4vw,3.35rem)] font-bold leading-[1.12] tracking-tight text-slate-900 text-balance">
@@ -296,11 +297,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   type="button"
                   onClick={() => setOwlTipIdx((prev) => prev + 1)}
-                  className="text-left bg-white/90 border border-violet-200 rounded-3xl p-4 flex items-center gap-4 hover-lift max-w-xl"
+                  className="text-left bg-white/90 border border-sm rounded-3xl p-4 flex items-center gap-4 hover-lift max-w-xl"
                 >
                   <OwlAvatar size="md" mood="cheering" />
                   <div className="min-w-0">
-                    <div className="text-xs font-semibold text-violet-700">
+                    <div className="text-xs font-semibold text-sm-accent">
                       Ollie the Study Owl · Tap for a quick tip
                     </div>
                     <p className="text-sm font-medium text-slate-800 mt-0.5 leading-snug">
@@ -313,14 +314,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <button
                     type="button"
                     onClick={handlePrimaryCta}
-                    className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-white bg-sm-accent rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
                   >
                     {currentUser ? 'Go to My Workspace' : 'Start Planning Free ✨'}
                     <ArrowRight className="w-4 h-4" />
                   </button>
                   <a
                     href="#pricing"
-                    className="px-5 py-3.5 text-sm font-semibold text-slate-700 hover:text-violet-900 bg-white border border-violet-200 hover:border-violet-300 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
+                    className="px-5 py-3.5 text-sm font-semibold text-slate-700 hover:text-sm-accent bg-white border border-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
                   >
                     View ₹49/mo Plan
                   </a>
@@ -332,8 +333,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
               {/* Right Interactive Study Timetable Preview */}
               <div className="lg:col-span-6 flex flex-col">
-                <div className="flex-1 bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 flex flex-col justify-between space-y-5 shadow-xs hover-lift">
-                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-violet-100 pb-4">
+                <div className="flex-1 bg-white border border-sm rounded-3xl p-5 sm:p-6 flex flex-col justify-between space-y-5 shadow-xs hover-lift">
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-sm-subtle pb-4">
                     <div>
                       <h2 className="font-display text-base font-bold text-slate-900">
                         📅 Interactive Weekly Study Planner
@@ -343,7 +344,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                         <span className="text-amber-700 font-semibold">🔥 5-day sample streak</span>
                       </p>
                     </div>
-                    <div className="flex items-center gap-1 p-1 bg-violet-50 border border-violet-100 rounded-2xl">
+                    <div className="flex items-center gap-1 p-1 bg-sm-soft border border-sm-subtle rounded-2xl">
                       {(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] as PreviewDay[]).map((day) => (
                         <button
                           key={day}
@@ -351,8 +352,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                           onClick={() => setPreviewDay(day)}
                           className={`px-2.5 py-1 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap shrink-0 ${
                             previewDay === day
-                              ? 'bg-violet-600 text-white'
-                              : 'text-slate-600 hover:text-violet-900'
+                              ? 'bg-sm-accent text-white'
+                              : 'text-slate-600 hover:text-sm-accent'
                           }`}
                         >
                           {day}
@@ -372,7 +373,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                           className={`w-full text-left p-3.5 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 flex items-start justify-between gap-4 ${
                             done
                               ? 'bg-emerald-50/80 border-emerald-200'
-                              : 'bg-violet-50/40 border-violet-100 hover:border-violet-300'
+                              : 'bg-sm-soft/60 border-sm-subtle hover:border-sm'
                           }`}
                         >
                           <div className="flex items-start gap-3 min-w-0">
@@ -380,7 +381,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                               className={`mt-0.5 w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
                                 done
                                   ? 'bg-emerald-500 border-emerald-500 text-white'
-                                  : 'bg-white border-violet-200 text-transparent'
+                                  : 'bg-white border-sm text-transparent'
                               }`}
                             >
                               <Check className="w-3.5 h-3.5" />
@@ -410,12 +411,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     })}
                   </div>
 
-                  <div className="pt-3 border-t border-violet-100 flex items-center justify-between text-xs text-slate-600">
+                  <div className="pt-3 border-t border-sm-subtle flex items-center justify-between text-xs text-slate-600">
                     <span>Tap any block above to check it off ✅</span>
                     <button
                       type="button"
                       onClick={handlePrimaryCta}
-                      className="font-semibold text-violet-700 hover:text-violet-900 whitespace-nowrap shrink-0"
+                      className="font-semibold text-sm-accent hover:underline whitespace-nowrap shrink-0"
                     >
                       Customize yours →
                     </button>
@@ -425,7 +426,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Full-width 4-column KPI Strip below Hero Split */}
-            <div className="mt-12 pt-8 border-t border-violet-200/60 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="mt-12 pt-8 border-t border-sm-subtle grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               <div className="bg-white/80 border border-emerald-200/80 rounded-2xl p-4 hover-lift">
                 <div className="font-mono text-2xl font-bold text-slate-900 tabular-nums">
                   ₹0 / mo
@@ -434,7 +435,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   🌱 Free basic timetable & planner
                 </div>
               </div>
-              <div className="bg-white/80 border border-violet-200/80 rounded-2xl p-4 hover-lift">
+              <div className="bg-white/80 border border-sm rounded-2xl p-4 hover-lift">
                 <div className="font-mono text-2xl font-bold text-slate-900 tabular-nums">
                   ₹49 / mo
                 </div>
@@ -459,6 +460,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
               </div>
             </div>
+
+            {/* Cute Theme Picker Table Preview */}
+            <div className="mt-10">
+              <ThemePickerTable compact />
+            </div>
           </div>
         </section>
 
@@ -477,13 +483,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Feature 01 - Wide span */}
-              <div className="md:col-span-2 bg-gradient-to-br from-white to-violet-50/60 border border-violet-200 rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 hover-lift">
+              <div className="md:col-span-2 bg-white border border-sm rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 hover-lift">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-4">
                     <h3 className="font-display text-xl font-bold text-slate-900">
                       📅 01. Personalized Study Timetable
                     </h3>
-                    <CalendarDays className="w-5 h-5 text-violet-600 shrink-0" />
+                    <CalendarDays className="w-5 h-5 text-sm-accent shrink-0" />
                   </div>
                   <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl">
                     Plan study, revision, and assignment blocks from Monday to Sunday around your
@@ -491,7 +497,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     without juggling paper diaries.
                   </p>
                 </div>
-                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-violet-100 text-xs text-slate-600">
+                <div className="grid grid-cols-3 gap-4 pt-4 border-t border-sm-subtle text-xs text-slate-600">
                   <div>
                     <div className="font-semibold text-slate-900">☀️ Today Focus</div>
                     <div className="mt-0.5">Auto-highlights today&apos;s plan</div>
@@ -592,7 +598,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </section>
 
         {/* Positioning Comparison Matrix */}
-        <section id="comparison" className="py-16 bg-white border-y border-violet-100">
+        <section id="comparison" className="py-16 bg-white border-y border-sm-subtle">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-8">
             <div className="max-w-2xl space-y-2">
               <h2 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 text-balance">
@@ -603,22 +609,22 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </p>
             </div>
 
-            <div className="overflow-x-auto border border-violet-200 rounded-3xl">
+            <div className="overflow-x-auto border border-sm rounded-3xl">
               <table className="w-full text-left border-collapse min-w-[640px]">
                 <thead>
-                  <tr className="bg-violet-50/70 border-b border-violet-200 text-xs font-semibold text-slate-700">
+                  <tr className="bg-sm-soft border-b border-sm text-xs font-semibold text-slate-700">
                     <th className="py-4 px-5">Capability</th>
                     <th className="py-4 px-5">General Calendars</th>
                     <th className="py-4 px-5">Generic Note Suites</th>
-                    <th className="py-4 px-5 bg-violet-100/70 text-violet-950">🦉 StudyMate</th>
+                    <th className="py-4 px-5 bg-sm-accent-soft text-sm-accent">🦉 StudyMate</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-violet-100 text-sm">
+                <tbody className="divide-y divide-slate-100 text-sm">
                   <tr>
                     <td className="py-3.5 px-5 font-semibold text-slate-900">Setup Time</td>
                     <td className="py-3.5 px-5 text-slate-600">Fast, but lacks syllabus links</td>
                     <td className="py-3.5 px-5 text-slate-600">Manual template building</td>
-                    <td className="py-3.5 px-5 font-semibold text-slate-900 bg-violet-50/40">
+                    <td className="py-3.5 px-5 font-semibold text-slate-900 bg-sm-soft/50">
                       Ready in under 60 seconds ✨
                     </td>
                   </tr>
@@ -628,7 +634,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </td>
                     <td className="py-3.5 px-5 text-slate-600">Not supported</td>
                     <td className="py-3.5 px-5 text-slate-600">Requires custom formulas</td>
-                    <td className="py-3.5 px-5 font-semibold text-slate-900 bg-violet-50/40">
+                    <td className="py-3.5 px-5 font-semibold text-slate-900 bg-sm-soft/50">
                       Built-in unit progress & countdowns
                     </td>
                   </tr>
@@ -638,7 +644,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </td>
                     <td className="py-3.5 px-5 text-slate-600">Manual recurring events</td>
                     <td className="py-3.5 px-5 text-slate-600">Not built-in</td>
-                    <td className="py-3.5 px-5 font-semibold text-slate-900 bg-violet-50/40">
+                    <td className="py-3.5 px-5 font-semibold text-slate-900 bg-sm-soft/50">
                       Day 1·3·7 cycles + study streaks 🔥
                     </td>
                   </tr>
@@ -650,7 +656,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <td className="py-3.5 px-5 text-slate-600 font-mono tabular-nums">
                       Free / Paid tiers
                     </td>
-                    <td className="py-3.5 px-5 font-bold text-violet-800 bg-violet-50/40 font-mono tabular-nums">
+                    <td className="py-3.5 px-5 font-bold text-sm-accent bg-sm-soft/50 font-mono tabular-nums">
                       Free · Plus ₹49 / month
                     </td>
                   </tr>
@@ -751,10 +757,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
 
                 {/* Student Plus Plan */}
-                <div className="bg-gradient-to-br from-white to-violet-50/70 border-2 border-violet-500 rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 hover-lift">
+                <div className="bg-white border-2 border-sm-accent rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6 hover-lift">
                   <div className="space-y-4">
                     <div>
-                      <p className="text-xs font-semibold text-violet-700">
+                      <p className="text-xs font-semibold text-sm-accent">
                         ✨ For heavy semesters & competitive exams
                       </p>
                       <h3 className="font-display text-xl font-bold text-slate-900 mt-1">
@@ -767,19 +773,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </div>
                     <ul className="space-y-2.5 pt-2 text-sm text-slate-700">
                       <li className="flex items-center gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-violet-600 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-sm-accent shrink-0" />
                         <span>Unlimited subjects, electives & exam papers</span>
                       </li>
                       <li className="flex items-center gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-violet-600 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-sm-accent shrink-0" />
                         <span>1–3–7 day spaced revision cycle workflows</span>
                       </li>
                       <li className="flex items-center gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-violet-600 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-sm-accent shrink-0" />
                         <span>Weekly study summary CSV export</span>
                       </li>
                       <li className="flex items-center gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-violet-600 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-sm-accent shrink-0" />
                         <span>Early access to Dehradun campus pilot perks</span>
                       </li>
                     </ul>
@@ -788,7 +794,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   <button
                     type="button"
                     onClick={handlePrimaryCta}
-                    className="w-full py-3 px-4 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-2xl transition-colors whitespace-nowrap"
+                    className="w-full py-3 px-4 text-sm font-semibold text-white bg-sm-accent rounded-2xl transition-colors whitespace-nowrap"
                   >
                     {currentUser ? 'Manage Plan in Dashboard' : 'Try StudyMate Plus ✨'}
                   </button>
@@ -801,7 +807,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         {/* Campus Pilot Banner */}
         <section
           id="pilot"
-          className="py-14 bg-gradient-to-r from-violet-900 via-indigo-900 to-slate-900 text-white"
+          className="py-14 bg-sm-pilot text-white"
         >
           <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex items-center gap-5 max-w-2xl">
@@ -812,7 +818,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <h2 className="font-display text-2xl font-bold tracking-tight text-white">
                   Join the Dehradun Student Pilot Cohort 🎓
                 </h2>
-                <p className="text-sm sm:text-base text-violet-100 leading-relaxed">
+                <p className="text-sm sm:text-base text-slate-100/90 leading-relaxed">
                   We are piloting StudyMate across college campuses in Dehradun, Uttarakhand. Sign
                   in to organize your semester and share direct feedback with our team.
                 </p>
@@ -821,7 +827,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               type="button"
               onClick={handlePrimaryCta}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-violet-950 bg-amber-200 hover:bg-amber-100 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-semibold text-slate-900 bg-amber-200 hover:bg-amber-100 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
             >
               {currentUser ? 'Open My Workspace' : 'Join Campus Pilot ✨'}
               <ArrowRight className="w-4 h-4" />
@@ -831,21 +837,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </main>
 
       {/* Quiet Footer */}
-      <footer className="bg-white border-t border-violet-100 py-8">
+      <footer className="bg-white border-t border-sm-subtle py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-slate-500">
           <div className="flex items-center gap-3">
-            <span className="font-display font-bold text-sm text-violet-950">🦉 StudyMate</span>
+            <span className="font-display font-bold text-sm text-slate-900">🦉 StudyMate</span>
             <span aria-hidden="true">·</span>
             <span>Dehradun, Uttarakhand · Student Study Planning Platform</span>
           </div>
           <div className="flex items-center gap-5">
-            <a href="#features" className="hover:text-violet-700 transition-colors">
+            <a href="#features" className="hover:text-sm-accent transition-colors">
               Features
             </a>
-            <a href="#comparison" className="hover:text-violet-700 transition-colors">
+            <a href="#comparison" className="hover:text-sm-accent transition-colors">
               Comparison
             </a>
-            <a href="#pricing" className="hover:text-violet-700 transition-colors">
+            <a href="#pricing" className="hover:text-sm-accent transition-colors">
               Pricing
             </a>
             <span>© {new Date().getFullYear()} StudyMate</span>

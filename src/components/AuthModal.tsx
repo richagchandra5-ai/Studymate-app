@@ -48,12 +48,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       aria-modal="true"
       aria-labelledby="auth-modal-title"
     >
-      <div className="bg-white border border-violet-200 rounded-3xl max-w-md w-full p-6 sm:p-7 space-y-6 relative shadow-lg">
+      <div className="bg-white border border-sm rounded-3xl max-w-md w-full p-6 sm:p-7 space-y-6 relative shadow-lg">
         <button
           type="button"
           onClick={onClose}
           aria-label="Close sign in dialog"
-          className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 hover:bg-violet-50 rounded-xl transition-colors"
+          className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 hover:bg-sm-soft rounded-xl transition-colors"
         >
           <X className="w-4 h-4" />
         </button>
@@ -61,7 +61,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         <div className="flex items-center gap-4">
           <OwlAvatar size="md" mood="happy" />
           <div className="space-y-1">
-            <span className="font-display font-bold text-sm text-violet-700">🦉 StudyMate</span>
+            <span className="font-display font-bold text-sm text-sm-accent">🦉 StudyMate</span>
             <h2 id="auth-modal-title" className="font-display text-2xl font-bold text-slate-900">
               {mode === 'signin' ? 'Welcome back!' : 'Join StudyMate'}
             </h2>
@@ -75,7 +75,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </p>
 
         {/* Mode Switcher */}
-        <div className="grid grid-cols-2 p-1 bg-violet-50 border border-violet-100 rounded-2xl">
+        <div className="grid grid-cols-2 p-1 bg-sm-soft border border-sm-subtle rounded-2xl">
           <button
             type="button"
             onClick={() => {
@@ -84,7 +84,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             }}
             className={`py-2 text-xs font-semibold rounded-xl transition-colors ${
               mode === 'signin'
-                ? 'bg-white text-violet-950 shadow-xs'
+                ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -98,7 +98,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             }}
             className={`py-2 text-xs font-semibold rounded-xl transition-colors ${
               mode === 'signup'
-                ? 'bg-white text-violet-950 shadow-xs'
+                ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -111,7 +111,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             type="button"
             onClick={handleGoogleAuth}
             disabled={loading}
-            className="w-full py-3.5 px-4 bg-violet-600 hover:bg-violet-700 disabled:opacity-60 text-white text-sm font-semibold rounded-2xl transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2.5"
+            className="w-full py-3.5 px-4 bg-sm-accent disabled:opacity-60 text-white text-sm font-semibold rounded-2xl transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2.5"
           >
             {loading ? (
               <>
@@ -137,7 +137,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
           )}
 
-          <div className="pt-2 border-t border-violet-100 space-y-2 text-xs text-slate-600">
+          <div className="pt-2 border-t border-sm-subtle space-y-2 text-xs text-slate-600">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <span>Cloud synced across desktop and mobile 📱</span>
@@ -221,12 +221,12 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ profile, onCompl
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8FF] flex items-center justify-center p-4 sm:p-6">
-      <div className="max-w-2xl w-full bg-white border border-violet-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
-        <div className="flex items-center gap-4 border-b border-violet-100 pb-5">
+    <div className="min-h-screen bg-sm-canvas flex items-center justify-center p-4 sm:p-6">
+      <div className="max-w-2xl w-full bg-white border border-sm rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs">
+        <div className="flex items-center gap-4 border-b border-sm-subtle pb-5">
           <OwlAvatar size="lg" mood="cheering" />
           <div className="space-y-1">
-            <p className="text-xs font-semibold text-violet-700">✨ Welcome to StudyMate</p>
+            <p className="text-xs font-semibold text-sm-accent">✨ Welcome to StudyMate</p>
             <h1 className="font-display text-2xl font-bold text-slate-900">
               Let&apos;s set up your cozy study space!
             </h1>
@@ -250,7 +250,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ profile, onCompl
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="e.g., Richa Chandra"
-                className="w-full px-3.5 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full px-3.5 py-2.5 text-sm sm-input rounded-2xl"
               />
             </div>
 
@@ -269,7 +269,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ profile, onCompl
                 value={program}
                 onChange={(e) => setProgram(e.target.value)}
                 placeholder="e.g., MBA Semester 2"
-                className="w-full px-3.5 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full px-3.5 py-2.5 text-sm sm-input rounded-2xl"
               />
             </div>
           </div>
@@ -290,7 +290,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ profile, onCompl
                 value={university}
                 onChange={(e) => setUniversity(e.target.value)}
                 placeholder="e.g., DBS Global University, Dehradun"
-                className="w-full px-3.5 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full px-3.5 py-2.5 text-sm sm-input rounded-2xl"
               />
             </div>
 
@@ -302,7 +302,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ profile, onCompl
                 id="ob-goal"
                 value={dailyGoalMinutes}
                 onChange={(e) => setDailyGoalMinutes(Number(e.target.value))}
-                className="w-full px-3.5 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                className="w-full px-3.5 py-2.5 text-sm sm-input rounded-2xl"
               >
                 <option value={90}>1.5 hours / day (90 mins)</option>
                 <option value={120}>2 hours / day (120 mins)</option>
@@ -327,8 +327,8 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ profile, onCompl
                     onClick={() => setStarterStream(opt.id)}
                     className={`text-left p-4 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 ${
                       selected
-                        ? 'bg-violet-50 border-violet-500'
-                        : 'bg-white border-violet-100 hover:border-violet-300'
+                        ? 'bg-sm-soft border-sm-accent'
+                        : 'bg-white border-sm-subtle hover:border-sm'
                     }`}
                   >
                     <div className="text-sm font-bold text-slate-900">
@@ -357,7 +357,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ profile, onCompl
             <button
               type="submit"
               disabled={submitting}
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 disabled:opacity-60 rounded-2xl transition-all duration-200 hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-sm-accent disabled:opacity-60 rounded-2xl transition-all duration-200 hover:-translate-y-0.5"
             >
               {submitting ? (
                 <>

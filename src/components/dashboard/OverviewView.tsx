@@ -109,7 +109,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       {/* Greeting & Quick Summary */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-medium text-violet-700">
+          <p className="text-xs font-medium text-sm-accent">
             ☀️ {todayDow}, {formatDisplayDate(todayIso)} · {profile.university}
           </p>
           <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mt-1">
@@ -120,14 +120,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           <button
             type="button"
             onClick={() => onNavigate('timetable')}
-            className="px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-violet-50 border border-violet-200 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
+            className="px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-sm-soft border border-sm rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
           >
             📅 Edit Timetable
           </button>
           <button
             type="button"
             onClick={() => onNavigate('focus')}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-sm-accent rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
           >
             <Play className="w-3.5 h-3.5" />
             Full Focus Log
@@ -161,15 +161,15 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </div>
         </div>
 
-        <div className="bg-violet-50/75 border border-violet-200/80 rounded-3xl p-4 sm:p-5 space-y-2 hover-lift">
-          <div className="flex items-center justify-between text-xs font-medium text-violet-900">
+        <div className="bg-sm-soft border border-sm rounded-3xl p-4 sm:p-5 space-y-2 hover-lift">
+          <div className="flex items-center justify-between text-xs font-medium text-sm-accent">
             <span>⏱️ Today&apos;s Focus</span>
-            <Clock className="w-4 h-4 text-violet-600 shrink-0" />
+            <Clock className="w-4 h-4 text-sm-accent shrink-0" />
           </div>
           <div className="font-mono text-2xl font-bold text-slate-900 tabular-nums">
             {formatDuration(todayMinutes)}
           </div>
-          <div className="text-xs text-violet-800 font-mono tabular-nums">
+          <div className="text-xs text-sm-accent font-mono tabular-nums">
             {goalPct}% of {formatDuration(profile.dailyGoalMinutes)} goal
           </div>
         </div>
@@ -206,7 +206,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         {/* Left: Today's Timetable + Weekly Study Chart */}
         <div className="lg:col-span-7 space-y-6">
           {/* Today's Blocks */}
-          <section className="bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 space-y-4">
+          <section className="bg-white border border-sm rounded-3xl p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <h2 className="font-display text-lg font-bold text-slate-900">
@@ -219,7 +219,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <button
                 type="button"
                 onClick={() => onNavigate('timetable')}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-violet-700 hover:text-violet-900 whitespace-nowrap shrink-0"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-sm-accent hover:underline whitespace-nowrap shrink-0"
               >
                 Full Timetable
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -227,14 +227,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             </div>
 
             {todayBlocks.length === 0 ? (
-              <div className="py-8 text-center border border-dashed border-violet-200 bg-violet-50/30 rounded-2xl space-y-3">
+              <div className="py-8 text-center border border-dashed border-sm bg-sm-soft/50 rounded-2xl space-y-3">
                 <p className="text-sm text-slate-600">
                   No study blocks scheduled for {todayDow} yet 🌱
                 </p>
                 <button
                   type="button"
                   onClick={() => onNavigate('timetable')}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-2xl transition-colors"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-sm-accent rounded-2xl transition-colors"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Add {todayDow} Block
@@ -255,7 +255,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                       className={`p-3.5 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-between gap-3 ${
                         done
                           ? 'bg-emerald-50/70 border-emerald-200'
-                          : 'bg-violet-50/30 border-violet-100 hover:border-violet-300'
+                          : 'bg-sm-soft/50 border-sm-subtle hover:border-sm'
                       }`}
                     >
                       <div className="flex items-start gap-3 min-w-0">
@@ -268,7 +268,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                           className={`mt-0.5 w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
                             done
                               ? 'bg-emerald-500 border-emerald-500 text-white'
-                              : 'bg-white border-violet-300 hover:border-violet-600 text-transparent'
+                              : 'bg-white border-sm text-transparent'
                           }`}
                         >
                           <Check className="w-3.5 h-3.5" />
@@ -300,7 +300,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                           type="button"
                           onClick={() => onStartFocusForSubject(block.subjectId)}
                           title={`Start focus timer for ${block.subjectName}`}
-                          className="p-2 text-violet-700 hover:text-white hover:bg-violet-600 bg-white border border-violet-200 rounded-xl transition-colors"
+                          className="p-2 text-sm-accent hover:bg-sm-soft bg-white border border-sm rounded-xl transition-colors"
                         >
                           <Play className="w-3.5 h-3.5" />
                         </button>
@@ -313,7 +313,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </section>
 
           {/* 7-Day Focus Consistency */}
-          <section className="bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 space-y-5">
+          <section className="bg-white border border-sm rounded-3xl p-5 sm:p-6 space-y-5">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <h2 className="font-display text-lg font-bold text-slate-900">
@@ -326,7 +326,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <button
                 type="button"
                 onClick={() => onNavigate('focus')}
-                className="text-xs font-semibold text-violet-700 hover:text-violet-900 whitespace-nowrap"
+                className="text-xs font-semibold text-sm-accent hover:underline whitespace-nowrap"
               >
                 Session History →
               </button>
@@ -340,26 +340,30 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 );
                 const metGoal = day.minutes >= profile.dailyGoalMinutes;
                 const isToday = day.iso === todayIso;
+                const barStyle: React.CSSProperties = {
+                  height: `${heightPct}%`,
+                  ...(metGoal
+                    ? {}
+                    : {
+                        backgroundColor: isToday ? 'var(--sm-accent)' : 'var(--sm-chart-bar)',
+                      }),
+                };
                 return (
                   <div key={day.iso} className="flex flex-col items-center h-full justify-end gap-2">
                     <span className="font-mono text-[11px] text-slate-500 tabular-nums">
                       {day.minutes > 0 ? `${day.minutes}m` : '0'}
                     </span>
-                    <div className="w-full max-w-[36px] flex-1 flex items-end bg-violet-50 rounded-xl overflow-hidden">
+                    <div className="w-full max-w-[36px] flex-1 flex items-end bg-sm-soft rounded-xl overflow-hidden">
                       <div
-                        style={{ height: `${heightPct}%` }}
+                        style={barStyle}
                         className={`w-full rounded-t-xl transition-all duration-300 ${
-                          metGoal
-                            ? 'bg-emerald-400'
-                            : isToday
-                              ? 'bg-violet-500'
-                              : 'bg-indigo-300'
+                          metGoal ? 'bg-emerald-400' : ''
                         }`}
                       />
                     </div>
                     <span
                       className={`text-xs ${
-                        isToday ? 'font-bold text-violet-900' : 'text-slate-500'
+                        isToday ? 'font-bold text-sm-accent' : 'text-slate-500'
                       }`}
                     >
                       {day.label}
@@ -381,7 +385,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           />
 
           {/* Exam Countdowns */}
-          <section className="bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 space-y-4">
+          <section className="bg-white border border-sm rounded-3xl p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between gap-4">
               <h2 className="font-display text-lg font-bold text-slate-900">
                 🎯 Upcoming Exams
@@ -389,7 +393,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <button
                 type="button"
                 onClick={() => onNavigate('subjects')}
-                className="text-xs font-semibold text-violet-700 hover:text-violet-900 whitespace-nowrap"
+                className="text-xs font-semibold text-sm-accent hover:underline whitespace-nowrap"
               >
                 All Subjects →
               </button>
@@ -454,7 +458,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </section>
 
           {/* Priority Tasks */}
-          <section className="bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 space-y-4">
+          <section className="bg-white border border-sm rounded-3xl p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between gap-4">
               <h2 className="font-display text-lg font-bold text-slate-900">
                 📌 Next Tasks & Revisions
@@ -462,7 +466,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <button
                 type="button"
                 onClick={() => onNavigate('tasks')}
-                className="text-xs font-semibold text-violet-700 hover:text-violet-900 whitespace-nowrap"
+                className="text-xs font-semibold text-sm-accent hover:underline whitespace-nowrap"
               >
                 Manage All →
               </button>
@@ -473,7 +477,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 All assignments and revision checkpoints are complete! 🎉
               </p>
             ) : (
-              <div className="divide-y divide-violet-100">
+              <div className="divide-y divide-slate-100">
                 {openTasks.slice(0, 5).map((task) => {
                   const diff = daysUntil(task.dueDate);
                   const overdue = diff !== null && diff < 0;

@@ -239,15 +239,15 @@ export const PomodoroTimerCard: React.FC<PomodoroTimerCardProps> = ({
   const dashOffset = circumference * (1 - progressRatio);
 
   const isBreak = phase !== 'focus';
-  const ringStroke = isBreak ? '#10b981' : '#7c3aed';
-  const trackStroke = isBreak ? '#d1fae5' : '#ede9fe';
+  const ringStroke = isBreak ? '#10b981' : 'var(--sm-ring-stroke)';
+  const trackStroke = isBreak ? '#d1fae5' : 'var(--sm-ring-track)';
 
   return (
     <section
       className={`border rounded-3xl p-5 sm:p-6 flex flex-col justify-between space-y-4 ${
         isBreak
           ? 'bg-gradient-to-br from-white to-emerald-50/60 border-emerald-200'
-          : 'bg-white border-violet-200/80'
+          : 'bg-white border-sm'
       }`}
     >
       {/* Header */}
@@ -261,14 +261,14 @@ export const PomodoroTimerCard: React.FC<PomodoroTimerCardProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs font-medium text-violet-700 bg-violet-50 border border-violet-100 px-2.5 py-1 rounded-xl">
+        <div className="flex items-center gap-1.5 text-xs font-medium text-sm-accent bg-sm-soft border border-sm-subtle px-2.5 py-1 rounded-xl">
           {isBreak ? <Coffee className="w-3.5 h-3.5 text-emerald-600" /> : null}
           <span>{isRunning ? (isBreak ? 'Resting' : 'Focusing') : 'Ready'}</span>
         </div>
       </div>
 
       {/* Mode Presets */}
-      <div className="flex flex-wrap items-center gap-1 p-1 bg-violet-50/80 rounded-2xl">
+      <div className="flex flex-wrap items-center gap-1 p-1 bg-sm-soft rounded-2xl">
         {PRESETS.map((preset) => (
           <button
             key={preset.id}
@@ -276,8 +276,8 @@ export const PomodoroTimerCard: React.FC<PomodoroTimerCardProps> = ({
             onClick={() => selectPreset(preset)}
             className={`flex-1 min-w-[82px] py-1.5 px-2 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${
               selectedPresetId === preset.id
-                ? 'bg-white text-violet-950 shadow-xs'
-                : 'text-slate-600 hover:text-violet-900'
+                ? 'bg-white text-slate-900 shadow-xs'
+                : 'text-slate-600 hover:text-sm-accent'
             }`}
           >
             {preset.label}
@@ -357,7 +357,7 @@ export const PomodoroTimerCard: React.FC<PomodoroTimerCardProps> = ({
                     <select
                       value={subjectId}
                       onChange={(e) => setSubjectId(e.target.value)}
-                      className="w-full px-3 py-2 text-xs sm:text-sm bg-violet-50/40 border border-violet-200 rounded-xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                      className="w-full px-3 py-2 text-xs sm:text-sm sm-input rounded-xl"
                     >
                       {subjects.map((s) => (
                         <option key={s.id} value={s.id}>
@@ -377,7 +377,7 @@ export const PomodoroTimerCard: React.FC<PomodoroTimerCardProps> = ({
                       value={notes}
                       onChange={(e) => setNotes(e.target.value)}
                       placeholder="e.g., Chapter 4 numericals"
-                      className="w-full px-3 py-2 text-xs sm:text-sm bg-violet-50/40 border border-violet-200 rounded-xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                      className="w-full px-3 py-2 text-xs sm:text-sm sm-input rounded-xl"
                     />
                   </div>
                 </>
@@ -406,7 +406,7 @@ export const PomodoroTimerCard: React.FC<PomodoroTimerCardProps> = ({
           }}
           disabled={!isBreak && subjects.length === 0}
           className={`flex-1 min-w-[120px] inline-flex items-center justify-center gap-2 py-2.5 px-4 text-sm font-semibold text-white rounded-2xl transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50 ${
-            isBreak ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-violet-600 hover:bg-violet-700'
+            isBreak ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-sm-accent'
           }`}
         >
           {isRunning ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -429,7 +429,7 @@ export const PomodoroTimerCard: React.FC<PomodoroTimerCardProps> = ({
           type="button"
           onClick={handleReset}
           aria-label="Reset timer"
-          className="p-2.5 text-slate-700 bg-violet-50 hover:bg-violet-100 border border-violet-100 rounded-2xl transition-colors"
+          className="p-2.5 text-slate-700 bg-sm-soft hover:bg-sm-accent-soft border border-sm-subtle rounded-2xl transition-colors"
         >
           <RotateCcw className="w-4 h-4" />
         </button>

@@ -22,12 +22,12 @@ export const OwlAvatar: React.FC<OwlMascotProps> = ({
       aria-hidden="true"
     >
       {/* Soft pastel halo */}
-      <circle cx="60" cy="62" r="52" fill="#EDE9FE" />
+      <circle cx="60" cy="62" r="52" fill="var(--sm-owl-halo)" />
       {/* Little owl ears */}
-      <path d="M30 42 L24 22 L45 32 Z" fill="#8B5CF6" />
-      <path d="M90 42 L96 22 L75 32 Z" fill="#8B5CF6" />
+      <path d="M30 42 L24 22 L45 32 Z" fill="var(--sm-owl-ear)" />
+      <path d="M90 42 L96 22 L75 32 Z" fill="var(--sm-owl-ear)" />
       {/* Round cozy body */}
-      <ellipse cx="60" cy="68" rx="34" ry="36" fill="#A78BFA" />
+      <ellipse cx="60" cy="68" rx="34" ry="36" fill="var(--sm-owl-body)" />
       {/* Cream belly */}
       <ellipse cx="60" cy="78" rx="22" ry="23" fill="#FFFBEB" />
       {/* Belly feathers */}
@@ -45,7 +45,7 @@ export const OwlAvatar: React.FC<OwlMascotProps> = ({
         rx="8"
         ry="18"
         transform="rotate(12 28 70)"
-        fill="#7C3AED"
+        fill="var(--sm-owl-wing)"
       />
       <ellipse
         cx="92"
@@ -53,7 +53,7 @@ export const OwlAvatar: React.FC<OwlMascotProps> = ({
         rx="8"
         ry="18"
         transform="rotate(-12 92 70)"
-        fill="#7C3AED"
+        fill="var(--sm-owl-wing)"
       />
       {/* Eye patches */}
       <circle cx="46" cy="51" r="13" fill="#FFFFFF" />
@@ -64,7 +64,7 @@ export const OwlAvatar: React.FC<OwlMascotProps> = ({
         cy="51"
         r="14.5"
         fill="none"
-        stroke="#4C1D95"
+        stroke="var(--sm-accent-text)"
         strokeWidth="2.5"
       />
       <circle
@@ -72,10 +72,10 @@ export const OwlAvatar: React.FC<OwlMascotProps> = ({
         cy="51"
         r="14.5"
         fill="none"
-        stroke="#4C1D95"
+        stroke="var(--sm-accent-text)"
         strokeWidth="2.5"
       />
-      <line x1="60.5" y1="51" x2="59.5" y2="51" stroke="#4C1D95" strokeWidth="2.5" />
+      <line x1="60.5" y1="51" x2="59.5" y2="51" stroke="var(--sm-accent-text)" strokeWidth="2.5" />
       {/* Pupils based on mood */}
       {mood === 'cheering' ? (
         <>
@@ -186,22 +186,22 @@ export const OwlCompanionBanner: React.FC<OwlCompanionBannerProps> = ({
     todayMinutes >= goalMinutes ? 'cheering' : todayMinutes > 0 ? 'focused' : 'happy';
 
   return (
-    <div className="bg-gradient-to-r from-violet-50 via-rose-50/60 to-amber-50/70 border border-violet-200/80 rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover-lift">
+    <div className="bg-sm-banner border border-sm rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover-lift">
       <div className="flex items-center gap-4 min-w-0">
         <button
           type="button"
           onClick={() => setMessageIndex((prev) => prev + 1)}
           title="Tap Ollie the Owl for another encouraging note"
-          className="shrink-0 rounded-2xl p-1 hover:scale-105 transition-transform bg-white/80 border border-violet-100 shadow-xs"
+          className="shrink-0 rounded-2xl p-1 hover:scale-105 transition-transform bg-white/85 border border-sm-subtle shadow-xs"
         >
           <OwlAvatar size="md" mood={mood} />
         </button>
 
         <div className="min-w-0 space-y-1">
-          <div className="flex items-center gap-2 text-xs font-semibold text-violet-800">
+          <div className="flex items-center gap-2 text-xs font-semibold text-sm-accent">
             <span>Ollie the Study Owl</span>
             <span aria-hidden="true">·</span>
-            <span className="text-violet-600 font-medium">Tap Ollie for a pep talk</span>
+            <span className="opacity-80 font-medium">Tap Ollie for a pep talk</span>
           </div>
           <p className="text-sm sm:text-base font-medium text-slate-800 leading-snug">
             {currentMessage}
@@ -213,9 +213,9 @@ export const OwlCompanionBanner: React.FC<OwlCompanionBannerProps> = ({
         <button
           type="button"
           onClick={onQuickAction}
-          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold text-violet-900 bg-white hover:bg-violet-100/70 border border-violet-200 rounded-2xl transition-colors whitespace-nowrap shrink-0"
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold text-sm-accent bg-white hover:bg-sm-soft border border-sm rounded-2xl transition-colors whitespace-nowrap shrink-0"
         >
-          <Sparkles className="w-3.5 h-3.5 text-violet-600" />
+          <Sparkles className="w-3.5 h-3.5 text-sm-accent" />
           <span>Start Focus Session</span>
         </button>
       )}

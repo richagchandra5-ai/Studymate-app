@@ -3,12 +3,14 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from './lib/firebase';
 import { getOrCreateUserProfile, subscribeUserProfile } from './services/studymateService';
 import { UserProfile } from './types/studymate';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { LandingPage } from './components/LandingPage';
 import { AuthModal, OnboardingView } from './components/AuthModal';
 import { DashboardWorkspace } from './components/DashboardWorkspace';
 
 function StudyMateApp() {
+  const { syncThemeFromProfile } = useTheme();
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [authInitialized, setAuthInitialized] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -34,8 +36,12 @@ function StudyMateApp() {
             user.email || 'student@dgu.ac.in'
           );
           setProfile(initial);
+          syncThemeFromProfile(initial.theme);
           unsubProfile = subscribeUserProfile(user.uid, (updated) => {
-            if (updated) setProfile(updated);
+            if (updated) {
+              setProfile(updated);
+              syncThemeFromProfile(updated.theme);
+            }
           });
           setView('dashboard');
         } catch (err) {
@@ -56,7 +62,7 @@ function StudyMateApp() {
 
   if (!authInitialized) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-sm-canvas flex items-center justify-center p-6">
         <div className="space-y-2 text-center">
           <div className="font-display text-xl font-bold text-slate-900">StudyMate</div>
           <p className="text-xs text-slate-500">Loading your study workspace...</p>
@@ -68,7 +74,7 @@ function StudyMateApp() {
   if (authUser && view === 'dashboard') {
     if (!profile) {
       return (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+        <div className="min-h-screen bg-sm-canvas flex items-center justify-center p-6">
           <p className="text-sm text-slate-600">Preparing your student profile...</p>
         </div>
       );
@@ -117,7 +123,9 @@ function StudyMateApp() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <StudyMateApp />
+      <ThemeProvider>
+        <StudyMateApp />
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }

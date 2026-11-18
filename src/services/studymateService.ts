@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../lib/firebase';
 import {
+  AppThemeId,
   BlockType,
   DayOfWeek,
   FocusMode,
@@ -181,6 +182,7 @@ export async function getOrCreateUserProfile(
       program: 'Undergraduate / Postgraduate',
       dailyGoalMinutes: 180,
       planTier: 'free' as PlanTier,
+      theme: 'pastel-dream' as AppThemeId,
       onboardingComplete: false,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -339,6 +341,18 @@ export async function updatePlanTier(uid: string, planTier: PlanTier): Promise<v
   try {
     await updateDoc(doc(db, 'users', uid), {
       planTier,
+      updatedAt: serverTimestamp(),
+    });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, path);
+  }
+}
+
+export async function updateUserTheme(uid: string, theme: AppThemeId): Promise<void> {
+  const path = `users/${uid}`;
+  try {
+    await updateDoc(doc(db, 'users', uid), {
+      theme,
       updatedAt: serverTimestamp(),
     });
   } catch (error) {

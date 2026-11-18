@@ -9,6 +9,7 @@ export type TaskStatus = 'pending' | 'in-progress' | 'completed';
 export type FocusMode = 'pomodoro' | 'deep-work' | 'quick-review';
 export type PlanTier = 'free' | 'plus';
 export type WillingnessToPay = 'free-only' | 'inr-49' | 'inr-99';
+export type AppThemeId = 'pastel-dream' | 'sunset-peach' | 'mint-garden';
 
 export const DAYS_OF_WEEK: DayOfWeek[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -38,6 +39,7 @@ export interface UserProfile {
   dailyGoalMinutes: number;
   planTier: PlanTier;
   onboardingComplete: boolean;
+  theme?: AppThemeId;
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }

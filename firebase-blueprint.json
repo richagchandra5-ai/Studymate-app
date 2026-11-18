@@ -42,6 +42,10 @@
         "onboardingComplete": {
           "type": "boolean"
         },
+        "theme": {
+          "type": "string",
+          "enum": ["pastel-dream", "sunset-peach", "mint-garden"]
+        },
         "createdAt": {
           "type": "string",
           "format": "date-time"

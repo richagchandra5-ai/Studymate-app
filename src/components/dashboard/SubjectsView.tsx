@@ -162,7 +162,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
         <button
           type="button"
           onClick={openCreateModal}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-sm-accent rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
         >
           <Plus className="w-4 h-4" />
           {atFreeLimit ? 'Upgrade for More Subjects ✨' : 'Add Subject'}
@@ -170,15 +170,15 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
       </div>
 
       {atFreeLimit && (
-        <div className="bg-violet-50 border border-violet-200 rounded-3xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <p className="text-sm text-violet-950">
+        <div className="bg-sm-soft border border-sm rounded-3xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <p className="text-sm text-slate-800">
             You have reached the Free plan limit of {SCHEMA_LIMITS.FREE_SUBJECT_LIMIT} subjects.
             Activate Student Plus (₹49/month) to manage unlimited courses and electives! ✨
           </p>
           <button
             type="button"
             onClick={onUpgradeRequested}
-            className="px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-xl whitespace-nowrap shrink-0"
+            className="px-4 py-2 text-xs font-semibold text-white bg-sm-accent rounded-xl whitespace-nowrap shrink-0"
           >
             View Student Plus →
           </button>
@@ -186,8 +186,8 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
       )}
 
       {subjects.length === 0 ? (
-        <div className="bg-white border border-dashed border-violet-200 rounded-3xl p-10 text-center space-y-3">
-          <BookOpen className="w-8 h-8 text-violet-400 mx-auto" />
+        <div className="bg-white border border-dashed border-sm rounded-3xl p-10 text-center space-y-3">
+          <BookOpen className="w-8 h-8 text-sm-accent mx-auto" />
           <h2 className="font-display text-lg font-bold text-slate-900">No subjects added yet 🌱</h2>
           <p className="text-sm text-slate-600 max-w-md mx-auto">
             Add your current semester papers with exam dates and topic counts to start building
@@ -196,7 +196,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
           <button
             type="button"
             onClick={openCreateModal}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-2xl"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-sm-accent rounded-2xl"
           >
             <Plus className="w-3.5 h-3.5" />
             Add First Subject
@@ -216,7 +216,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
             return (
               <div
                 key={subj.id}
-                className="bg-white border border-violet-200/80 rounded-3xl p-5 flex flex-col justify-between space-y-4 hover-lift"
+                className="bg-white border border-sm rounded-3xl p-5 flex flex-col justify-between space-y-4 hover-lift"
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-3">
@@ -254,7 +254,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                         type="button"
                         onClick={() => openEditModal(subj)}
                         aria-label={`Edit ${subj.name}`}
-                        className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-violet-50 rounded-xl"
+                        className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-sm-soft rounded-xl"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
@@ -351,7 +351,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
           role="dialog"
           aria-modal="true"
         >
-          <div className="bg-white border border-violet-200 rounded-3xl max-w-lg w-full p-6 space-y-5 relative max-h-[90vh] overflow-y-auto shadow-lg">
+          <div className="bg-white border border-sm rounded-3xl max-w-lg w-full p-6 space-y-5 relative max-h-[90vh] overflow-y-auto shadow-lg">
             <button
               type="button"
               onClick={() => setModalOpen(false)}
@@ -378,7 +378,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g., Managerial Economics"
-                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl"
                   />
                 </div>
                 <div>
@@ -392,7 +392,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     placeholder="e.g., MBA-101"
-                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
+                    className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl font-mono"
                   />
                 </div>
               </div>
@@ -406,7 +406,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                     type="date"
                     value={examDate}
                     onChange={(e) => setExamDate(e.target.value)}
-                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
+                    className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl font-mono"
                   />
                 </div>
                 <div>
@@ -416,7 +416,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                   <select
                     value={priority}
                     onChange={(e) => setPriority(e.target.value as PriorityLevel)}
-                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl"
                   >
                     <option value="high">High</option>
                     <option value="medium">Medium</option>
@@ -437,7 +437,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                     required
                     value={totalTopics}
                     onChange={(e) => setTotalTopics(Number(e.target.value))}
-                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
+                    className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl font-mono"
                   />
                 </div>
                 <div>
@@ -451,7 +451,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                     required
                     value={completedTopics}
                     onChange={(e) => setCompletedTopics(Number(e.target.value))}
-                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
+                    className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl font-mono"
                   />
                 </div>
               </div>
@@ -468,7 +468,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                       onClick={() => setColor(opt)}
                       className={`px-3 py-1.5 text-xs font-medium rounded-xl border flex items-center gap-1.5 ${
                         color === opt
-                          ? 'border-violet-600 bg-violet-50 text-violet-950'
+                          ? 'border-sm-accent bg-sm-soft text-sm-accent'
                           : 'border-slate-200 text-slate-600'
                       }`}
                     >
@@ -491,7 +491,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                   value={notesSummary}
                   onChange={(e) => setNotesSummary(e.target.value)}
                   placeholder="Key formulas, reference textbook chapters, or module focus..."
-                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm sm-input rounded-2xl"
                 />
               </div>
 
@@ -512,7 +512,7 @@ export const SubjectsView: React.FC<SubjectsViewProps> = ({
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 disabled:opacity-60 rounded-xl"
+                  className="px-4 py-2 text-xs font-semibold text-white bg-sm-accent disabled:opacity-60 rounded-xl"
                 >
                   {saving ? 'Saving...' : editingSubject ? 'Save Changes' : 'Create Subject'}
                 </button>

@@ -64,7 +64,7 @@ export const FocusTimerView: React.FC<FocusTimerViewProps> = ({
         <button
           type="button"
           onClick={handleExportCsv}
-          className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-violet-50 border border-violet-200 rounded-2xl transition-colors whitespace-nowrap shrink-0"
+          className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-sm-soft border border-sm rounded-2xl transition-colors whitespace-nowrap shrink-0"
         >
           <Download className="w-3.5 h-3.5" />
           {profile.planTier === 'plus' ? 'Export Study CSV' : 'Export CSV (Plus ✨)'}
@@ -83,7 +83,7 @@ export const FocusTimerView: React.FC<FocusTimerViewProps> = ({
         </div>
 
         {/* Session History Table */}
-        <section className="lg:col-span-7 bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 space-y-4">
+        <section className="lg:col-span-7 bg-white border border-sm rounded-3xl p-5 sm:p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="font-display text-lg font-bold text-slate-900">
@@ -96,7 +96,7 @@ export const FocusTimerView: React.FC<FocusTimerViewProps> = ({
           </div>
 
           {sessions.length === 0 ? (
-            <div className="py-12 text-center border border-dashed border-violet-200 bg-violet-50/30 rounded-2xl space-y-2">
+            <div className="py-12 text-center border border-dashed border-sm bg-sm-soft/50 rounded-2xl space-y-2">
               <p className="text-sm font-semibold text-slate-700">No study sessions logged yet 🌱</p>
               <p className="text-xs text-slate-500">
                 Start the Pomodoro timer on the left and log your first session to build your streak!
@@ -106,7 +106,7 @@ export const FocusTimerView: React.FC<FocusTimerViewProps> = ({
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-violet-100 text-xs font-semibold text-slate-500">
+                  <tr className="border-b border-sm-subtle text-xs font-semibold text-slate-500">
                     <th className="py-2.5 pr-3">Date</th>
                     <th className="py-2.5 px-3">Subject</th>
                     <th className="py-2.5 px-3">Mode</th>
@@ -114,9 +114,9 @@ export const FocusTimerView: React.FC<FocusTimerViewProps> = ({
                     <th className="py-2.5 pl-3 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-violet-50 text-sm">
+                <tbody className="divide-y divide-slate-100 text-sm">
                   {sessions.slice(0, 15).map((sess) => (
-                    <tr key={sess.id} className="hover:bg-violet-50/40 transition-colors">
+                    <tr key={sess.id} className="hover:bg-sm-soft/50 transition-colors">
                       <td className="py-3 pr-3 font-mono text-xs text-slate-600 tabular-nums whitespace-nowrap">
                         {formatDisplayDate(sess.sessionDate)}
                       </td>
@@ -131,7 +131,7 @@ export const FocusTimerView: React.FC<FocusTimerViewProps> = ({
                       <td className="py-3 px-3 text-xs text-slate-600 capitalize whitespace-nowrap">
                         {sess.focusMode.replace('-', ' ')}
                       </td>
-                      <td className="py-3 px-3 text-right font-mono text-xs font-bold text-violet-900 tabular-nums whitespace-nowrap">
+                      <td className="py-3 px-3 text-right font-mono text-xs font-bold text-sm-accent tabular-nums whitespace-nowrap">
                         {sess.durationMinutes} min
                       </td>
                       <td className="py-3 pl-3 text-right">
