@@ -24,6 +24,13 @@ interface TimetableViewProps {
   onGoToSubjects: () => void;
 }
 
+const BLOCK_EMOJI: Record<BlockType, string> = {
+  study: '📘',
+  revision: '🔁',
+  assignment: '📝',
+  'exam-prep': '🎯',
+};
+
 export const TimetableView: React.FC<TimetableViewProps> = ({
   uid,
   subjects,
@@ -122,7 +129,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-slate-900">
-            Personalized Study Timetable
+            📅 Personalized Study Timetable
           </h1>
           <p className="text-sm text-slate-600 mt-0.5 font-mono tabular-nums">
             {blocks.length} weekly blocks · {Math.round((totalWeeklyMins / 60) * 10) / 10} hours
@@ -134,7 +141,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
           type="button"
           onClick={() => openCreateModal()}
           disabled={subjects.length === 0}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-blue-700 hover:bg-blue-800 disabled:opacity-50 rounded-lg transition-colors whitespace-nowrap shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 disabled:opacity-50 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
         >
           <Plus className="w-4 h-4" />
           Add Study Block
@@ -142,14 +149,14 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
       </div>
 
       {subjects.length === 0 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="bg-amber-50 border border-amber-200 rounded-3xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <p className="text-sm text-amber-900">
-            Add at least one subject first so you can assign timetable blocks to it.
+            Add at least one subject first so you can assign timetable blocks to it! 📚
           </p>
           <button
             type="button"
             onClick={onGoToSubjects}
-            className="px-3.5 py-2 text-xs font-semibold text-amber-900 bg-white border border-amber-300 rounded-lg hover:bg-amber-100 whitespace-nowrap shrink-0"
+            className="px-3.5 py-2 text-xs font-semibold text-amber-900 bg-white border border-amber-300 rounded-xl hover:bg-amber-100 whitespace-nowrap shrink-0"
           >
             Go to Subjects →
           </button>
@@ -157,14 +164,14 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
       )}
 
       {/* Day Filter Bar */}
-      <div className="flex flex-wrap items-center gap-1.5 p-1.5 bg-white border border-slate-200 rounded-xl">
+      <div className="flex flex-wrap items-center gap-1.5 p-1.5 bg-white border border-violet-200/80 rounded-2xl">
         <button
           type="button"
           onClick={() => setSelectedDay('ALL')}
-          className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 ${
+          className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap shrink-0 ${
             selectedDay === 'ALL'
-              ? 'bg-blue-700 text-white'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              ? 'bg-violet-600 text-white'
+              : 'text-slate-600 hover:text-violet-900 hover:bg-violet-50'
           }`}
         >
           All Week
@@ -177,15 +184,15 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
               key={day}
               type="button"
               onClick={() => setSelectedDay(day)}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
                 selectedDay === day
-                  ? 'bg-blue-700 text-white'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  ? 'bg-violet-600 text-white'
+                  : 'text-slate-600 hover:text-violet-900 hover:bg-violet-50'
               }`}
             >
               <span>{day}</span>
               {isToday && selectedDay !== day && (
-                <span className="text-[10px] text-blue-700 font-bold">(Today)</span>
+                <span className="text-[10px] text-violet-700 font-bold">(Today)</span>
               )}
               <span className="font-mono opacity-75 tabular-nums">{count}</span>
             </button>
@@ -207,15 +214,15 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
           return (
             <section
               key={day}
-              className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between space-y-4"
+              className="bg-white border border-violet-200/80 rounded-3xl p-5 flex flex-col justify-between space-y-4 hover-lift"
             >
               <div className="space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="flex items-center justify-between border-b border-violet-100 pb-3">
                   <div className="flex items-center gap-2">
-                    <CalendarDays className="w-4 h-4 text-blue-700" />
-                    <h2 className="font-display text-base font-semibold text-slate-900">
+                    <CalendarDays className="w-4 h-4 text-violet-600" />
+                    <h2 className="font-display text-base font-bold text-slate-900">
                       {day}
-                      {day === todayDow ? ' · Today' : ''}
+                      {day === todayDow ? ' · Today ☀️' : ''}
                     </h2>
                   </div>
                   <span className="font-mono text-xs text-slate-500 tabular-nums">
@@ -224,13 +231,13 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                 </div>
 
                 {dayBlocks.length === 0 ? (
-                  <div className="py-8 text-center border border-dashed border-slate-200 rounded-lg space-y-2">
-                    <p className="text-xs text-slate-500">No study blocks planned for {day}.</p>
+                  <div className="py-8 text-center border border-dashed border-violet-200 bg-violet-50/30 rounded-2xl space-y-2">
+                    <p className="text-xs text-slate-500">No study blocks planned for {day} 🌱</p>
                     {subjects.length > 0 && (
                       <button
                         type="button"
                         onClick={() => openCreateModal(day)}
-                        className="text-xs font-semibold text-blue-700 hover:text-blue-800"
+                        className="text-xs font-semibold text-violet-700 hover:text-violet-900"
                       >
                         + Add {day} Block
                       </button>
@@ -249,10 +256,10 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                       return (
                         <div
                           key={block.id}
-                          className={`p-3.5 rounded-lg border transition-colors ${
+                          className={`p-3.5 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 ${
                             doneToday
-                              ? 'bg-emerald-50/50 border-emerald-200'
-                              : 'bg-slate-50/70 border-slate-200'
+                              ? 'bg-emerald-50/80 border-emerald-200'
+                              : `${style.surface} ${style.border}`
                           }`}
                         >
                           <div className="flex items-start justify-between gap-2">
@@ -268,17 +275,18 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                                     )
                                   }
                                   aria-label={`Toggle completion for ${block.title}`}
-                                  className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center shrink-0 ${
+                                  className={`mt-0.5 w-4 h-4 rounded-md border flex items-center justify-center shrink-0 ${
                                     doneToday
-                                      ? 'bg-emerald-600 border-emerald-600 text-white'
-                                      : 'bg-white border-slate-300 text-transparent'
+                                      ? 'bg-emerald-500 border-emerald-500 text-white'
+                                      : 'bg-white border-violet-300 text-transparent'
                                   }`}
                                 >
                                   <Check className="w-3 h-3" />
                                 </button>
                               )}
                               <div className="min-w-0">
-                                <div className="flex items-center gap-2 text-xs text-slate-500">
+                                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                                  <span aria-hidden="true">{BLOCK_EMOJI[block.blockType]}</span>
                                   <span className={`font-semibold ${style.text}`}>
                                     {block.subjectName}
                                   </span>
@@ -288,7 +296,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                                   </span>
                                 </div>
                                 <div
-                                  className={`text-sm font-medium mt-0.5 ${
+                                  className={`text-sm font-semibold mt-0.5 ${
                                     doneToday ? 'line-through text-slate-500' : 'text-slate-900'
                                   }`}
                                 >
@@ -302,7 +310,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                                 type="button"
                                 onClick={() => openEditModal(block)}
                                 aria-label={`Edit ${block.title}`}
-                                className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-white rounded-md"
+                                className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-white/80 rounded-lg"
                               >
                                 <Edit2 className="w-3.5 h-3.5" />
                               </button>
@@ -310,14 +318,14 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                                 type="button"
                                 onClick={() => deleteScheduleBlock(uid, block.id)}
                                 aria-label={`Delete ${block.title}`}
-                                className="p-1.5 text-slate-500 hover:text-red-700 hover:bg-white rounded-md"
+                                className="p-1.5 text-slate-500 hover:text-rose-700 hover:bg-white/80 rounded-lg"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
                             </div>
                           </div>
 
-                          <div className="mt-2.5 pt-2 border-t border-slate-200/70 flex items-center justify-between font-mono text-xs text-slate-600 tabular-nums">
+                          <div className="mt-2.5 pt-2 border-t border-white/70 flex items-center justify-between font-mono text-xs text-slate-700 tabular-nums">
                             <span>Starts {block.startTime}</span>
                             <span>{block.durationMinutes} min</span>
                           </div>
@@ -335,22 +343,22 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
       {/* Add/Edit Block Modal */}
       {modalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
         >
-          <div className="bg-white border border-slate-200 rounded-xl max-w-md w-full p-6 space-y-5 relative">
+          <div className="bg-white border border-violet-200 rounded-3xl max-w-md w-full p-6 space-y-5 relative shadow-lg">
             <button
               type="button"
               onClick={() => setModalOpen(false)}
               aria-label="Close modal"
-              className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 rounded-lg"
+              className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 rounded-xl"
             >
               <X className="w-4 h-4" />
             </button>
 
             <h2 className="font-display text-lg font-bold text-slate-900">
-              {editingBlock ? 'Edit Study Block' : 'Add Study Block'}
+              {editingBlock ? '✏️ Edit Study Block' : '📅 Add Study Block'}
             </h2>
 
             <form onSubmit={handleSave} className="space-y-4">
@@ -362,7 +370,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                   value={subjectId}
                   onChange={(e) => setSubjectId(e.target.value)}
                   required
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                 >
                   {subjects.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -383,7 +391,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g., Unit 2 Elasticity Practice"
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                 />
               </div>
 
@@ -395,7 +403,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                   <select
                     value={dayOfWeek}
                     onChange={(e) => setDayOfWeek(e.target.value as DayOfWeek)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                   >
                     {DAYS_OF_WEEK.map((d) => (
                       <option key={d} value={d}>
@@ -412,12 +420,12 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                   <select
                     value={blockType}
                     onChange={(e) => setBlockType(e.target.value as BlockType)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                   >
-                    <option value="study">Core Study</option>
-                    <option value="revision">Spaced Revision</option>
-                    <option value="assignment">Assignment</option>
-                    <option value="exam-prep">Exam Prep</option>
+                    <option value="study">📘 Core Study</option>
+                    <option value="revision">🔁 Spaced Revision</option>
+                    <option value="assignment">📝 Assignment</option>
+                    <option value="exam-prep">🎯 Exam Prep</option>
                   </select>
                 </div>
               </div>
@@ -432,7 +440,7 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                     required
                     value={startTime}
                     onChange={(e) => setStartTime(e.target.value)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none font-mono"
+                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
                   />
                 </div>
 
@@ -448,13 +456,13 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                     required
                     value={durationMinutes}
                     onChange={(e) => setDurationMinutes(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none font-mono"
+                    className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
                   />
                 </div>
               </div>
 
               {formError && (
-                <div className="p-2.5 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700">
+                <div className="p-2.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-700">
                   {formError}
                 </div>
               )}
@@ -463,14 +471,14 @@ export const TimetableView: React.FC<TimetableViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg"
+                  className="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-4 py-2 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 disabled:opacity-60 rounded-lg"
+                  className="px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 disabled:opacity-60 rounded-xl"
                 >
                   {saving ? 'Saving...' : editingBlock ? 'Save Changes' : 'Add Block'}
                 </button>

@@ -1,4 +1,4 @@
-import { DayOfWeek } from '../types/studymate';
+import { DayOfWeek, ScheduleBlock, StudySession } from '../types/studymate';
 
 const JS_DAY_TO_DOW: DayOfWeek[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -64,4 +64,58 @@ export function formatDuration(minutes: number): string {
   const hrs = Math.floor(minutes / 60);
   const mins = minutes % 60;
   return mins === 0 ? `${hrs}h` : `${hrs}h ${mins}m`;
+}
+
+export interface StudyStreakInfo {
+  currentStreak: number;
+  bestStreak: number;
+  studiedToday: boolean;
+}
+
+export function calculateStudyStreak(
+  sessions: StudySession[],
+  blocks: ScheduleBlock[]
+): StudyStreakInfo {
+  const activeDates = new Set<string>();
+  sessions.forEach((s) => {
+    if (s.sessionDate) activeDates.add(s.sessionDate);
+  });
+  blocks.forEach((b) => {
+    if (b.lastCompletedDate) activeDates.add(b.lastCompletedDate);
+  });
+
+  const todayIso = getTodayIso();
+  const studiedToday = activeDates.has(todayIso);
+
+  if (activeDates.size === 0) {
+    return { currentStreak: 0, bestStreak: 0, studiedToday: false };
+  }
+
+  // Current streak: count backwards from today, or from yesterday if today isn't logged yet
+  let currentStreak = 0;
+  let offset = studiedToday ? 0 : -1;
+  while (activeDates.has(getOffsetIso(offset))) {
+    currentStreak += 1;
+    offset -= 1;
+  }
+
+  // Best streak across all recorded dates
+  const sortedDates = Array.from(activeDates).sort();
+  let bestStreak = 0;
+  let run = 0;
+  let prevTime: number | null = null;
+
+  for (const iso of sortedDates) {
+    const [y, m, d] = iso.split('-').map(Number);
+    const t = new Date(y, m - 1, d).getTime();
+    if (prevTime !== null && Math.round((t - prevTime) / (1000 * 60 * 60 * 24)) === 1) {
+      run += 1;
+    } else {
+      run = 1;
+    }
+    if (run > bestStreak) bestStreak = run;
+    prevTime = t;
+  }
+
+  return { currentStreak, bestStreak, studiedToday };
 }

@@ -91,7 +91,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold text-slate-900">
-          Plan, Profile & Campus Pilot Feedback
+          🎒 Plan, Profile & Campus Pilot Feedback
         </h1>
         <p className="text-sm text-slate-600 mt-0.5">
           Manage your student profile, subscription tier, and share feedback for our Dehradun
@@ -102,52 +102,53 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
       {/* Subscription Tier Cards */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div
-          className={`bg-white rounded-xl p-6 flex flex-col justify-between space-y-4 ${
+          className={`bg-white rounded-3xl p-6 flex flex-col justify-between space-y-4 hover-lift ${
             profile.planTier === 'free'
-              ? 'border-2 border-blue-700'
-              : 'border border-slate-200'
+              ? 'border-2 border-emerald-500'
+              : 'border border-violet-200'
           }`}
         >
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h2 className="font-display text-lg font-bold text-slate-900">Basic Free</h2>
+              <h2 className="font-display text-lg font-bold text-slate-900">🌱 Basic Free</h2>
               <span className="font-mono text-lg font-bold text-slate-900 tabular-nums">
                 ₹0 / mo
               </span>
             </div>
-            <p className="text-xs text-slate-600">
-              Up to 4 subjects, weekly study timetable, assignment deadlines, and focus timer.
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Up to 4 subjects, weekly study timetable, assignment deadlines, streaks, and focus
+              timer.
             </p>
           </div>
           <button
             type="button"
             disabled={profile.planTier === 'free' || switchingPlan}
             onClick={() => handleSwitchPlan('free')}
-            className={`w-full py-2 px-4 text-xs font-semibold rounded-lg transition-colors ${
+            className={`w-full py-2.5 px-4 text-xs font-semibold rounded-2xl transition-colors ${
               profile.planTier === 'free'
-                ? 'bg-slate-100 text-slate-500 cursor-default'
-                : 'bg-white border border-slate-300 text-slate-800 hover:bg-slate-50'
+                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 cursor-default'
+                : 'bg-white border border-violet-200 text-slate-800 hover:bg-violet-50'
             }`}
           >
-            {profile.planTier === 'free' ? 'Current Active Plan' : 'Switch to Basic Free'}
+            {profile.planTier === 'free' ? 'Current Active Plan ✅' : 'Switch to Basic Free'}
           </button>
         </div>
 
         <div
-          className={`bg-white rounded-xl p-6 flex flex-col justify-between space-y-4 ${
+          className={`bg-gradient-to-br from-white to-violet-50/70 rounded-3xl p-6 flex flex-col justify-between space-y-4 hover-lift ${
             profile.planTier === 'plus'
-              ? 'border-2 border-blue-700'
-              : 'border border-slate-200'
+              ? 'border-2 border-violet-600'
+              : 'border border-violet-200'
           }`}
         >
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h2 className="font-display text-lg font-bold text-slate-900">Student Plus</h2>
-              <span className="font-mono text-lg font-bold text-blue-700 tabular-nums">
+              <h2 className="font-display text-lg font-bold text-slate-900">✨ Student Plus</h2>
+              <span className="font-mono text-lg font-bold text-violet-700 tabular-nums">
                 ₹49 / mo
               </span>
             </div>
-            <p className="text-xs text-slate-600">
+            <p className="text-xs text-slate-600 leading-relaxed">
               Unlimited subjects & electives, full 1–3–7 spaced revision workflows, and CSV exports.
             </p>
           </div>
@@ -155,24 +156,24 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
             type="button"
             disabled={profile.planTier === 'plus' || switchingPlan}
             onClick={() => handleSwitchPlan('plus')}
-            className={`w-full py-2 px-4 text-xs font-semibold rounded-lg transition-colors ${
+            className={`w-full py-2.5 px-4 text-xs font-semibold rounded-2xl transition-colors ${
               profile.planTier === 'plus'
                 ? 'bg-emerald-50 text-emerald-800 border border-emerald-200 cursor-default'
-                : 'bg-blue-700 hover:bg-blue-800 text-white'
+                : 'bg-violet-600 hover:bg-violet-700 text-white'
             }`}
           >
             {profile.planTier === 'plus'
-              ? 'Current Active Plan (Pilot Preview)'
-              : 'Activate Student Plus Preview'}
+              ? 'Current Active Plan (Pilot Preview) ✨'
+              : 'Activate Student Plus Preview ✨'}
           </button>
         </div>
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Profile Form */}
-        <section className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
-          <h2 className="font-display text-lg font-semibold text-slate-900">
-            Student Academic Profile
+        <section className="bg-white border border-violet-200/80 rounded-3xl p-6 space-y-4">
+          <h2 className="font-display text-lg font-bold text-slate-900">
+            🎓 Student Academic Profile
           </h2>
           <form onSubmit={handleSaveProfile} className="space-y-4">
             <div>
@@ -183,7 +184,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 maxLength={SCHEMA_LIMITS.DISPLAY_NAME_MAX}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
               />
             </div>
 
@@ -197,7 +198,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 maxLength={SCHEMA_LIMITS.UNIVERSITY_MAX}
                 value={university}
                 onChange={(e) => setUniversity(e.target.value)}
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
               />
             </div>
 
@@ -210,7 +211,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                   maxLength={SCHEMA_LIMITS.PROGRAM_MAX}
                   value={program}
                   onChange={(e) => setProgram(e.target.value)}
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                 />
               </div>
 
@@ -226,24 +227,26 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                   required
                   value={dailyGoalMinutes}
                   onChange={(e) => setDailyGoalMinutes(Number(e.target.value))}
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none font-mono"
+                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-between pt-2">
               {profileSaved ? (
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
                   <CheckCircle2 className="w-4 h-4" />
-                  Profile updated
+                  Profile updated! ✨
                 </span>
               ) : (
-                <span className="text-xs text-slate-500">{profile.email}</span>
+                <span className="text-xs text-slate-500 truncate max-w-[200px]">
+                  {profile.email}
+                </span>
               )}
               <button
                 type="submit"
                 disabled={savingProfile}
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 rounded-lg disabled:opacity-60"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-xl disabled:opacity-60"
               >
                 {savingProfile && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 Save Profile
@@ -253,10 +256,10 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
         </section>
 
         {/* Campus Pilot Validation Form */}
-        <section className="bg-white border border-slate-200 rounded-xl p-6 space-y-4">
+        <section className="bg-white border border-violet-200/80 rounded-3xl p-6 space-y-4">
           <div>
-            <h2 className="font-display text-lg font-semibold text-slate-900">
-              Campus Pilot Feedback Survey
+            <h2 className="font-display text-lg font-bold text-slate-900">
+              💌 Campus Pilot Feedback Survey
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
               Help shape StudyMate during our Dehradun campus validation cohort.
@@ -274,7 +277,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 maxLength={SCHEMA_LIMITS.FEEDBACK_CHALLENGE_MAX}
                 value={biggestChallenge}
                 onChange={(e) => setBiggestChallenge(e.target.value)}
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
               />
             </div>
 
@@ -286,7 +289,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 <select
                   value={willingnessToPay}
                   onChange={(e) => setWillingnessToPay(e.target.value as WillingnessToPay)}
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                 >
                   <option value="free-only">Prefer Free Basic Tier</option>
                   <option value="inr-49">Would pay ₹49 / month</option>
@@ -301,10 +304,10 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 <select
                   value={rating}
                   onChange={(e) => setRating(Number(e.target.value))}
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none font-mono"
+                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
                 >
-                  <option value={5}>5 — Very Useful</option>
-                  <option value={4}>4 — Useful</option>
+                  <option value={5}>5 — Super Useful 🌟</option>
+                  <option value={4}>4 — Useful ✨</option>
                   <option value={3}>3 — Neutral</option>
                   <option value={2}>2 — Needs Work</option>
                   <option value={1}>1 — Not Useful</option>
@@ -322,15 +325,15 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
                 value={comments}
                 onChange={(e) => setComments(e.target.value)}
                 placeholder="What would make StudyMate indispensable during semester exams?"
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
               />
             </div>
 
             <div className="flex items-center justify-between pt-1">
               {feedbackSuccess ? (
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
                   <CheckCircle2 className="w-4 h-4" />
-                  Feedback recorded — thank you!
+                  Feedback recorded — thank you! 🦉
                 </span>
               ) : (
                 <span className="text-xs text-slate-500 font-mono tabular-nums">
@@ -340,7 +343,7 @@ export const PlanFeedbackView: React.FC<PlanFeedbackViewProps> = ({
               <button
                 type="submit"
                 disabled={submittingFeedback}
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg disabled:opacity-60"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-xl disabled:opacity-60"
               >
                 {submittingFeedback && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 Submit Feedback

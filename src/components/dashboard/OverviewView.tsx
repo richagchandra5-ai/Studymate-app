@@ -5,7 +5,7 @@ import {
   CalendarDays,
   Check,
   Clock,
-  Layers,
+  Flame,
   Play,
   Plus,
 } from 'lucide-react';
@@ -18,6 +18,7 @@ import {
   UserProfile,
 } from '../../types/studymate';
 import {
+  calculateStudyStreak,
   daysUntil,
   formatDisplayDate,
   formatDuration,
@@ -26,6 +27,8 @@ import {
   getTodayIso,
 } from '../../utils/dateUtils';
 import { toggleScheduleBlockDate } from '../../services/studymateService';
+import { OwlCompanionBanner } from '../OwlMascot';
+import { PomodoroTimerCard } from './PomodoroTimerCard';
 
 export type DashboardTab =
   | 'overview'
@@ -67,14 +70,11 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
     .reduce((sum, s) => sum + s.durationMinutes, 0);
 
   const openTasks = tasks.filter((t) => t.status !== 'completed');
-  const dueSoonTasks = openTasks.filter((t) => {
-    const diff = daysUntil(t.dueDate);
-    return diff !== null && diff <= 7;
-  });
-
   const totalTopics = subjects.reduce((sum, s) => sum + s.totalTopics, 0);
   const completedTopics = subjects.reduce((sum, s) => sum + s.completedTopics, 0);
   const masteryPct = totalTopics > 0 ? Math.round((completedTopics / totalTopics) * 100) : 0;
+
+  const streakInfo = calculateStudyStreak(sessions, blocks);
 
   const last7Days = getLast7Days();
   const dailyTotals = last7Days.map((day) => ({
@@ -109,83 +109,94 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       {/* Greeting & Quick Summary */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-medium text-slate-500">
-            {todayDow}, {formatDisplayDate(todayIso)} · {profile.university}
+          <p className="text-xs font-medium text-violet-700">
+            ☀️ {todayDow}, {formatDisplayDate(todayIso)} · {profile.university}
           </p>
           <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mt-1">
-            Welcome back, {profile.displayName.split(' ')[0]}
+            Hey {profile.displayName.split(' ')[0]}, ready to study? ✨
           </h1>
         </div>
         <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={() => onNavigate('timetable')}
-            className="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors whitespace-nowrap shrink-0"
+            className="px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-violet-50 border border-violet-200 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
           >
-            Edit Timetable
+            📅 Edit Timetable
           </button>
           <button
             type="button"
             onClick={() => onNavigate('focus')}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 rounded-lg transition-colors whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
           >
             <Play className="w-3.5 h-3.5" />
-            Start Focus Session
+            Full Focus Log
           </button>
         </div>
       </div>
 
-      {/* 4-Column KPI Strip */}
+      {/* Ollie the Study Owl Encouraging Companion Banner */}
+      <OwlCompanionBanner
+        studentName={profile.displayName}
+        streak={streakInfo.currentStreak}
+        todayMinutes={todayMinutes}
+        goalMinutes={profile.dailyGoalMinutes}
+        openTasksCount={openTasks.length}
+        onQuickAction={() => onNavigate('focus')}
+      />
+
+      {/* 4-Column Pastel KPI Strip (with Study Streak Counter!) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-500">
-            <span>Today&apos;s Focus</span>
-            <Clock className="w-4 h-4 text-blue-700 shrink-0" />
+        <div className="bg-amber-50/75 border border-amber-200/80 rounded-3xl p-4 sm:p-5 space-y-2 hover-lift">
+          <div className="flex items-center justify-between text-xs font-medium text-amber-900">
+            <span>🔥 Study Streak</span>
+            <Flame className="w-4 h-4 text-amber-600 shrink-0" />
           </div>
-          <div className="font-mono text-2xl font-semibold text-slate-900 tabular-nums">
+          <div className="font-mono text-2xl font-bold text-slate-900 tabular-nums">
+            {streakInfo.currentStreak} {streakInfo.currentStreak === 1 ? 'day' : 'days'}
+          </div>
+          <div className="text-xs text-amber-800 font-mono tabular-nums">
+            Best streak: {streakInfo.bestStreak}d ·{' '}
+            {streakInfo.studiedToday ? 'Active today' : 'Log 1 session'}
+          </div>
+        </div>
+
+        <div className="bg-violet-50/75 border border-violet-200/80 rounded-3xl p-4 sm:p-5 space-y-2 hover-lift">
+          <div className="flex items-center justify-between text-xs font-medium text-violet-900">
+            <span>⏱️ Today&apos;s Focus</span>
+            <Clock className="w-4 h-4 text-violet-600 shrink-0" />
+          </div>
+          <div className="font-mono text-2xl font-bold text-slate-900 tabular-nums">
             {formatDuration(todayMinutes)}
           </div>
-          <div className="text-xs text-slate-500 font-mono tabular-nums">
-            {goalPct}% of {formatDuration(profile.dailyGoalMinutes)} daily goal
+          <div className="text-xs text-violet-800 font-mono tabular-nums">
+            {goalPct}% of {formatDuration(profile.dailyGoalMinutes)} goal
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-500">
-            <span>{todayDow} Schedule</span>
-            <CalendarDays className="w-4 h-4 text-blue-700 shrink-0" />
+        <div className="bg-sky-50/75 border border-sky-200/80 rounded-3xl p-4 sm:p-5 space-y-2 hover-lift">
+          <div className="flex items-center justify-between text-xs font-medium text-sky-900">
+            <span>📅 {todayDow} Blocks</span>
+            <CalendarDays className="w-4 h-4 text-sky-600 shrink-0" />
           </div>
-          <div className="font-mono text-2xl font-semibold text-slate-900 tabular-nums">
+          <div className="font-mono text-2xl font-bold text-slate-900 tabular-nums">
             {completedTodayBlocks} / {todayBlocks.length}
           </div>
-          <div className="text-xs text-slate-500">
-            {todayBlocks.length === 0 ? 'No blocks scheduled today' : 'Study blocks completed'}
+          <div className="text-xs text-sky-800">
+            {todayBlocks.length === 0 ? 'Add blocks for today' : 'Scheduled today'}
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-500">
-            <span>Due Within 7 Days</span>
-            <Layers className="w-4 h-4 text-amber-600 shrink-0" />
-          </div>
-          <div className="font-mono text-2xl font-semibold text-slate-900 tabular-nums">
-            {dueSoonTasks.length}
-          </div>
-          <div className="text-xs text-slate-500 tabular-nums">
-            {openTasks.length} total open tasks & revisions
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 space-y-2">
-          <div className="flex items-center justify-between text-xs text-slate-500">
-            <span>Syllabus Mastery</span>
+        <div className="bg-emerald-50/75 border border-emerald-200/80 rounded-3xl p-4 sm:p-5 space-y-2 hover-lift">
+          <div className="flex items-center justify-between text-xs font-medium text-emerald-900">
+            <span>🌱 Syllabus Mastery</span>
             <BookOpen className="w-4 h-4 text-emerald-600 shrink-0" />
           </div>
-          <div className="font-mono text-2xl font-semibold text-slate-900 tabular-nums">
+          <div className="font-mono text-2xl font-bold text-slate-900 tabular-nums">
             {masteryPct}%
           </div>
-          <div className="text-xs text-slate-500 font-mono tabular-nums">
-            {completedTopics} / {totalTopics} topics across {subjects.length} subjects
+          <div className="text-xs text-emerald-800 font-mono tabular-nums">
+            {completedTopics} / {totalTopics} topics ({subjects.length} subjects)
           </div>
         </div>
       </div>
@@ -195,20 +206,20 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         {/* Left: Today's Timetable + Weekly Study Chart */}
         <div className="lg:col-span-7 space-y-6">
           {/* Today's Blocks */}
-          <section className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 space-y-4">
+          <section className="bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <h2 className="font-display text-lg font-semibold text-slate-900">
-                  Today&apos;s Study Plan ({todayDow})
+                <h2 className="font-display text-lg font-bold text-slate-900">
+                  📝 Today&apos;s Study Plan ({todayDow})
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Check off finished blocks or launch the focus timer directly.
+                  Check off completed blocks to keep your streak alive!
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => onNavigate('timetable')}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-700 hover:text-blue-800 whitespace-nowrap shrink-0"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-violet-700 hover:text-violet-900 whitespace-nowrap shrink-0"
               >
                 Full Timetable
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -216,21 +227,21 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             </div>
 
             {todayBlocks.length === 0 ? (
-              <div className="py-8 text-center border border-dashed border-slate-200 rounded-lg space-y-3">
+              <div className="py-8 text-center border border-dashed border-violet-200 bg-violet-50/30 rounded-2xl space-y-3">
                 <p className="text-sm text-slate-600">
-                  No study blocks scheduled for {todayDow} yet.
+                  No study blocks scheduled for {todayDow} yet 🌱
                 </p>
                 <button
                   type="button"
                   onClick={() => onNavigate('timetable')}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 rounded-lg transition-colors"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 rounded-2xl transition-colors"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Add {todayDow} Block
                 </button>
               </div>
             ) : (
-              <div className="divide-y divide-slate-100">
+              <div className="space-y-2.5">
                 {todayBlocks.map((block) => {
                   const done = block.lastCompletedDate === todayIso;
                   const subject = subjectMap.get(block.subjectId);
@@ -241,7 +252,11 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                   return (
                     <div
                       key={block.id}
-                      className="py-3.5 first:pt-1 last:pb-1 flex items-center justify-between gap-3"
+                      className={`p-3.5 rounded-2xl border transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-between gap-3 ${
+                        done
+                          ? 'bg-emerald-50/70 border-emerald-200'
+                          : 'bg-violet-50/30 border-violet-100 hover:border-violet-300'
+                      }`}
                     >
                       <div className="flex items-start gap-3 min-w-0">
                         <button
@@ -250,24 +265,24 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                           aria-label={
                             done ? `Unmark ${block.title}` : `Mark ${block.title} complete`
                           }
-                          className={`mt-0.5 w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-colors ${
+                          className={`mt-0.5 w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
                             done
-                              ? 'bg-emerald-600 border-emerald-600 text-white'
-                              : 'bg-white border-slate-300 hover:border-blue-700 text-transparent'
+                              ? 'bg-emerald-500 border-emerald-500 text-white'
+                              : 'bg-white border-violet-300 hover:border-violet-600 text-transparent'
                           }`}
                         >
                           <Check className="w-3.5 h-3.5" />
                         </button>
                         <div className="min-w-0">
                           <div className="flex items-center gap-2 text-xs text-slate-500">
-                            <span className={`font-medium ${colorStyle.text}`}>
+                            <span className={`font-semibold ${colorStyle.text}`}>
                               {block.subjectName}
                             </span>
                             <span aria-hidden="true">·</span>
                             <span className="capitalize">{block.blockType.replace('-', ' ')}</span>
                           </div>
                           <p
-                            className={`text-sm font-medium mt-0.5 truncate ${
+                            className={`text-sm font-semibold mt-0.5 truncate ${
                               done ? 'line-through text-slate-400' : 'text-slate-900'
                             }`}
                           >
@@ -278,14 +293,14 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
                       <div className="flex items-center gap-3 shrink-0">
                         <div className="text-right font-mono text-xs tabular-nums">
-                          <div className="font-medium text-slate-900">{block.startTime}</div>
+                          <div className="font-semibold text-slate-900">{block.startTime}</div>
                           <div className="text-slate-500">{block.durationMinutes}m</div>
                         </div>
                         <button
                           type="button"
                           onClick={() => onStartFocusForSubject(block.subjectId)}
                           title={`Start focus timer for ${block.subjectName}`}
-                          className="p-2 text-slate-600 hover:text-blue-700 hover:bg-blue-50 border border-slate-200 rounded-lg transition-colors"
+                          className="p-2 text-violet-700 hover:text-white hover:bg-violet-600 bg-white border border-violet-200 rounded-xl transition-colors"
                         >
                           <Play className="w-3.5 h-3.5" />
                         </button>
@@ -298,11 +313,11 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </section>
 
           {/* 7-Day Focus Consistency */}
-          <section className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 space-y-5">
+          <section className="bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 space-y-5">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <h2 className="font-display text-lg font-semibold text-slate-900">
-                  7-Day Study Consistency
+                <h2 className="font-display text-lg font-bold text-slate-900">
+                  📊 7-Day Focus Consistency
                 </h2>
                 <p className="text-xs text-slate-500 mt-0.5 font-mono tabular-nums">
                   Daily goal: {formatDuration(profile.dailyGoalMinutes)}
@@ -311,9 +326,9 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <button
                 type="button"
                 onClick={() => onNavigate('focus')}
-                className="text-xs font-semibold text-blue-700 hover:text-blue-800 whitespace-nowrap"
+                className="text-xs font-semibold text-violet-700 hover:text-violet-900 whitespace-nowrap"
               >
-                Log Session →
+                Session History →
               </button>
             </div>
 
@@ -330,21 +345,21 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                     <span className="font-mono text-[11px] text-slate-500 tabular-nums">
                       {day.minutes > 0 ? `${day.minutes}m` : '0'}
                     </span>
-                    <div className="w-full max-w-[36px] flex-1 flex items-end bg-slate-100 rounded-md overflow-hidden">
+                    <div className="w-full max-w-[36px] flex-1 flex items-end bg-violet-50 rounded-xl overflow-hidden">
                       <div
                         style={{ height: `${heightPct}%` }}
-                        className={`w-full rounded-t-md transition-all ${
+                        className={`w-full rounded-t-xl transition-all duration-300 ${
                           metGoal
-                            ? 'bg-emerald-600'
+                            ? 'bg-emerald-400'
                             : isToday
-                              ? 'bg-blue-700'
-                              : 'bg-blue-500/80'
+                              ? 'bg-violet-500'
+                              : 'bg-indigo-300'
                         }`}
                       />
                     </div>
                     <span
                       className={`text-xs ${
-                        isToday ? 'font-bold text-slate-900' : 'text-slate-500'
+                        isToday ? 'font-bold text-violet-900' : 'text-slate-500'
                       }`}
                     >
                       {day.label}
@@ -356,18 +371,25 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </section>
         </div>
 
-        {/* Right: Upcoming Exams & Priority Deadlines */}
+        {/* Right: Embedded Pomodoro Focus Timer + Upcoming Exams + Priority Deadlines */}
         <div className="lg:col-span-5 space-y-6">
+          <PomodoroTimerCard
+            profile={profile}
+            subjects={subjects}
+            compact
+            onGoToSubjects={() => onNavigate('subjects')}
+          />
+
           {/* Exam Countdowns */}
-          <section className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 space-y-4">
+          <section className="bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="font-display text-lg font-semibold text-slate-900">
-                Upcoming Exam Countdowns
+              <h2 className="font-display text-lg font-bold text-slate-900">
+                🎯 Upcoming Exams
               </h2>
               <button
                 type="button"
                 onClick={() => onNavigate('subjects')}
-                className="text-xs font-semibold text-blue-700 hover:text-blue-800 whitespace-nowrap"
+                className="text-xs font-semibold text-violet-700 hover:text-violet-900 whitespace-nowrap"
               >
                 All Subjects →
               </button>
@@ -375,7 +397,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
             {upcomingExams.length === 0 ? (
               <p className="text-sm text-slate-500 py-4">
-                Add exam dates to your subjects to monitor countdowns and syllabus readiness.
+                Add exam dates to your subjects to watch countdowns and syllabus readiness 🌸
               </p>
             ) : (
               <div className="space-y-3">
@@ -388,37 +410,40 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                   return (
                     <div
                       key={subject.id}
-                      className="p-3.5 border border-slate-200 rounded-lg space-y-2.5"
+                      className={`p-4 border rounded-2xl space-y-2.5 hover-lift ${style.surface} ${style.border}`}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="min-w-0">
-                          <div className="text-xs font-mono text-slate-500">{subject.code}</div>
-                          <div className="text-sm font-semibold text-slate-900 truncate">
+                          <div className="text-xs font-mono text-slate-600">{subject.code}</div>
+                          <div className="text-sm font-bold text-slate-900 truncate">
                             {subject.name}
                           </div>
                         </div>
                         <div className="text-right shrink-0">
                           <div
                             className={`font-mono text-sm font-bold tabular-nums ${
-                              (days ?? 99) <= 7 ? 'text-red-700' : 'text-slate-900'
+                              (days ?? 99) <= 7 ? 'text-rose-700' : 'text-slate-900'
                             }`}
                           >
-                            {days === 0 ? 'Today' : `${days}d left`}
+                            {days === 0 ? 'Today!' : `${days}d left`}
                           </div>
-                          <div className="text-[11px] text-slate-500">
+                          <div className="text-[11px] text-slate-600">
                             {formatDisplayDate(subject.examDate)}
                           </div>
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <div className="flex items-center justify-between text-xs text-slate-600 font-mono tabular-nums">
+                        <div className="flex items-center justify-between text-xs text-slate-700 font-mono tabular-nums">
                           <span>Syllabus readiness</span>
                           <span>
                             {subject.completedTopics}/{subject.totalTopics} ({pct}%)
                           </span>
                         </div>
-                        <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div className={`h-full ${style.bar}`} style={{ width: `${pct}%` }} />
+                        <div className="h-2 bg-white/80 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full ${style.bar}`}
+                            style={{ width: `${pct}%` }}
+                          />
                         </div>
                       </div>
                     </div>
@@ -429,15 +454,15 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </section>
 
           {/* Priority Tasks */}
-          <section className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 space-y-4">
+          <section className="bg-white border border-violet-200/80 rounded-3xl p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="font-display text-lg font-semibold text-slate-900">
-                Next Assignments & Revisions
+              <h2 className="font-display text-lg font-bold text-slate-900">
+                📌 Next Tasks & Revisions
               </h2>
               <button
                 type="button"
                 onClick={() => onNavigate('tasks')}
-                className="text-xs font-semibold text-blue-700 hover:text-blue-800 whitespace-nowrap"
+                className="text-xs font-semibold text-violet-700 hover:text-violet-900 whitespace-nowrap"
               >
                 Manage All →
               </button>
@@ -445,18 +470,21 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
             {openTasks.length === 0 ? (
               <p className="text-sm text-slate-500 py-4">
-                All assignments and revision checkpoints are complete.
+                All assignments and revision checkpoints are complete! 🎉
               </p>
             ) : (
-              <div className="divide-y divide-slate-100">
+              <div className="divide-y divide-violet-100">
                 {openTasks.slice(0, 5).map((task) => {
                   const diff = daysUntil(task.dueDate);
                   const overdue = diff !== null && diff < 0;
                   return (
-                    <div key={task.id} className="py-3 first:pt-0 last:pb-0 flex justify-between gap-3">
+                    <div
+                      key={task.id}
+                      className="py-3 first:pt-0 last:pb-0 flex justify-between gap-3"
+                    >
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 text-xs text-slate-500">
-                          <span className="font-medium text-slate-700">{task.subjectName}</span>
+                          <span className="font-semibold text-slate-700">{task.subjectName}</span>
                           <span aria-hidden="true">·</span>
                           <span className="capitalize">{task.category}</span>
                           {task.category === 'revision' && (
@@ -468,13 +496,13 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                             </>
                           )}
                         </div>
-                        <div className="text-sm font-medium text-slate-900 truncate mt-0.5">
+                        <div className="text-sm font-semibold text-slate-900 truncate mt-0.5">
                           {task.title}
                         </div>
                       </div>
                       <div
                         className={`text-right text-xs font-mono tabular-nums shrink-0 ${
-                          overdue ? 'text-red-700 font-semibold' : 'text-slate-600'
+                          overdue ? 'text-rose-700 font-semibold' : 'text-slate-600'
                         }`}
                       >
                         <div>{formatDisplayDate(task.dueDate)}</div>

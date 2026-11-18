@@ -32,6 +32,12 @@ interface TasksViewProps {
   onGoToSubjects: () => void;
 }
 
+const CATEGORY_EMOJI: Record<TaskCategory, string> = {
+  assignment: '📝',
+  revision: '🔁',
+  exam: '🎯',
+};
+
 export const TasksView: React.FC<TasksViewProps> = ({
   uid,
   subjects,
@@ -153,7 +159,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-2xl font-bold text-slate-900">
-            Assignments & Revision Tracker
+            🔁 Assignments & Revision Tracker
           </h1>
           <p className="text-sm text-slate-600 mt-0.5">
             Track deadlines and step through Day 1, Day 3, and Day 7 revision checkpoints.
@@ -163,7 +169,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
           type="button"
           onClick={openCreateModal}
           disabled={subjects.length === 0}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-blue-700 hover:bg-blue-800 disabled:opacity-50 rounded-lg transition-colors whitespace-nowrap shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 disabled:opacity-50 rounded-2xl transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap shrink-0"
         >
           <Plus className="w-4 h-4" />
           Add Task or Revision
@@ -171,14 +177,14 @@ export const TasksView: React.FC<TasksViewProps> = ({
       </div>
 
       {subjects.length === 0 && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="bg-amber-50 border border-amber-200 rounded-3xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <p className="text-sm text-amber-900">
-            Create a subject before logging assignments or revision milestones.
+            Create a subject before logging assignments or revision milestones 🌱
           </p>
           <button
             type="button"
             onClick={onGoToSubjects}
-            className="px-3.5 py-2 text-xs font-semibold text-amber-900 bg-white border border-amber-300 rounded-lg hover:bg-amber-100 whitespace-nowrap shrink-0"
+            className="px-3.5 py-2 text-xs font-semibold text-amber-900 bg-white border border-amber-300 rounded-xl hover:bg-amber-100 whitespace-nowrap shrink-0"
           >
             Go to Subjects →
           </button>
@@ -186,29 +192,29 @@ export const TasksView: React.FC<TasksViewProps> = ({
       )}
 
       {/* Search & Segmented Filters */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white border border-slate-200 rounded-xl p-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white border border-violet-200/80 rounded-3xl p-3">
         <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-violet-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by task, subject, or notes..."
-            className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:border-blue-700 focus:outline-none"
+            className="w-full pl-9 pr-3 py-2 text-sm bg-violet-50/40 border border-violet-100 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg">
+          <div className="flex items-center gap-1 p-1 bg-violet-50 rounded-2xl">
             {(['all', 'assignment', 'revision', 'exam'] as const).map((cat) => (
               <button
                 key={cat}
                 type="button"
                 onClick={() => setCategoryFilter(cat)}
-                className={`px-2.5 py-1.5 text-xs font-semibold rounded-md capitalize transition-colors whitespace-nowrap ${
+                className={`px-2.5 py-1.5 text-xs font-semibold rounded-xl capitalize transition-colors whitespace-nowrap ${
                   categoryFilter === cat
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900'
+                    ? 'bg-white text-violet-950 shadow-xs'
+                    : 'text-slate-600 hover:text-violet-900'
                 }`}
               >
                 {cat === 'all' ? 'All Types' : `${cat}s`}
@@ -216,14 +222,14 @@ export const TasksView: React.FC<TasksViewProps> = ({
             ))}
           </div>
 
-          <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg">
+          <div className="flex items-center gap-1 p-1 bg-violet-50 rounded-2xl">
             <button
               type="button"
               onClick={() => setStatusFilter('active')}
-              className={`px-2.5 py-1.5 text-xs font-semibold rounded-md transition-colors whitespace-nowrap ${
+              className={`px-2.5 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${
                 statusFilter === 'active'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-violet-950 shadow-xs'
+                  : 'text-slate-600 hover:text-violet-900'
               }`}
             >
               Active
@@ -231,10 +237,10 @@ export const TasksView: React.FC<TasksViewProps> = ({
             <button
               type="button"
               onClick={() => setStatusFilter('completed')}
-              className={`px-2.5 py-1.5 text-xs font-semibold rounded-md transition-colors whitespace-nowrap ${
+              className={`px-2.5 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${
                 statusFilter === 'completed'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-white text-violet-950 shadow-xs'
+                  : 'text-slate-600 hover:text-violet-900'
               }`}
             >
               Completed
@@ -245,10 +251,10 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
       {/* Tasks List */}
       {filteredTasks.length === 0 ? (
-        <div className="bg-white border border-dashed border-slate-300 rounded-xl p-10 text-center space-y-3">
-          <Layers className="w-8 h-8 text-slate-400 mx-auto" />
-          <h2 className="font-display text-base font-semibold text-slate-900">
-            No matching {statusFilter} tasks
+        <div className="bg-white border border-dashed border-violet-200 rounded-3xl p-10 text-center space-y-3">
+          <Layers className="w-8 h-8 text-violet-400 mx-auto" />
+          <h2 className="font-display text-base font-bold text-slate-900">
+            No matching {statusFilter} tasks ✨
           </h2>
           <p className="text-sm text-slate-600">
             {searchTerm
@@ -257,7 +263,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
           </p>
         </div>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-xl divide-y divide-slate-200">
+        <div className="space-y-3">
           {filteredTasks.map((task) => {
             const done = task.status === 'completed';
             const diff = daysUntil(task.dueDate);
@@ -266,17 +272,19 @@ export const TasksView: React.FC<TasksViewProps> = ({
             return (
               <div
                 key={task.id}
-                className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                className={`bg-white border rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover-lift ${
+                  done ? 'border-emerald-200 bg-emerald-50/30' : 'border-violet-200/80'
+                }`}
               >
                 <div className="flex items-start gap-3 min-w-0">
                   <button
                     type="button"
                     onClick={() => handleToggleComplete(task)}
                     aria-label={done ? `Reopen ${task.title}` : `Complete ${task.title}`}
-                    className={`mt-0.5 w-5 h-5 rounded border flex items-center justify-center shrink-0 transition-colors ${
+                    className={`mt-0.5 w-5 h-5 rounded-lg border flex items-center justify-center shrink-0 transition-colors ${
                       done
-                        ? 'bg-emerald-600 border-emerald-600 text-white'
-                        : 'bg-white border-slate-300 hover:border-blue-700 text-transparent'
+                        ? 'bg-emerald-500 border-emerald-500 text-white'
+                        : 'bg-white border-violet-300 hover:border-violet-600 text-transparent'
                     }`}
                   >
                     <Check className="w-3.5 h-3.5" />
@@ -284,6 +292,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
 
                   <div className="min-w-0 space-y-1">
                     <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                      <span aria-hidden="true">{CATEGORY_EMOJI[task.category]}</span>
                       <span className="font-semibold text-slate-800">{task.subjectName}</span>
                       <span aria-hidden="true">·</span>
                       <span className="capitalize">{task.category}</span>
@@ -298,15 +307,17 @@ export const TasksView: React.FC<TasksViewProps> = ({
                       <span aria-hidden="true">·</span>
                       <span
                         className={`font-mono tabular-nums ${
-                          overdue ? 'text-red-700 font-semibold' : 'text-slate-600'
+                          overdue ? 'text-rose-700 font-semibold' : 'text-slate-600'
                         }`}
                       >
-                        {overdue ? `Overdue (${formatDisplayDate(task.dueDate)})` : `Due ${formatDisplayDate(task.dueDate)}`}
+                        {overdue
+                          ? `Overdue (${formatDisplayDate(task.dueDate)})`
+                          : `Due ${formatDisplayDate(task.dueDate)}`}
                       </span>
                     </div>
 
                     <div
-                      className={`text-sm font-semibold ${
+                      className={`text-sm font-bold ${
                         done ? 'line-through text-slate-400' : 'text-slate-900'
                       }`}
                     >
@@ -329,7 +340,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
                         <button
                           type="button"
                           onClick={() => handleAdvanceRevision(task)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors whitespace-nowrap"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-violet-800 bg-violet-50 hover:bg-violet-100 border border-violet-200 rounded-xl transition-colors whitespace-nowrap"
                         >
                           <RotateCw className="w-3 h-3" />
                           {task.revisionStage >= 3 ? 'Finish' : 'Next Cycle'}
@@ -343,7 +354,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
                       type="button"
                       onClick={() => openEditModal(task)}
                       aria-label={`Edit ${task.title}`}
-                      className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-md"
+                      className="p-1.5 text-slate-500 hover:text-slate-900 hover:bg-violet-50 rounded-xl"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
@@ -351,7 +362,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
                       type="button"
                       onClick={() => deleteStudyTask(uid, task.id)}
                       aria-label={`Delete ${task.title}`}
-                      className="p-1.5 text-slate-500 hover:text-red-700 hover:bg-slate-100 rounded-md"
+                      className="p-1.5 text-slate-500 hover:text-rose-700 hover:bg-rose-50 rounded-xl"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -366,22 +377,22 @@ export const TasksView: React.FC<TasksViewProps> = ({
       {/* Add/Edit Task Modal */}
       {modalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
         >
-          <div className="bg-white border border-slate-200 rounded-xl max-w-md w-full p-6 space-y-5 relative">
+          <div className="bg-white border border-violet-200 rounded-3xl max-w-md w-full p-6 space-y-5 relative shadow-lg">
             <button
               type="button"
               onClick={() => setModalOpen(false)}
               aria-label="Close modal"
-              className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 rounded-lg"
+              className="absolute top-4 right-4 p-2 text-slate-500 hover:text-slate-900 rounded-xl"
             >
               <X className="w-4 h-4" />
             </button>
 
             <h2 className="font-display text-lg font-bold text-slate-900">
-              {editingTask ? 'Edit Task' : 'Add Assignment or Revision'}
+              {editingTask ? '✏️ Edit Task' : '📝 Add Assignment or Revision'}
             </h2>
 
             <form onSubmit={handleSave} className="space-y-4">
@@ -393,7 +404,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
                   value={subjectId}
                   onChange={(e) => setSubjectId(e.target.value)}
                   required
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                 >
                   {subjects.map((s) => (
                     <option key={s.id} value={s.id}>
@@ -414,7 +425,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g., Submit Finance Case Study Report"
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                 />
               </div>
 
@@ -426,7 +437,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as TaskCategory)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                    className="w-full px-2.5 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                   >
                     <option value="assignment">Assignment</option>
                     <option value="revision">Revision</option>
@@ -441,7 +452,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
                   <select
                     value={priority}
                     onChange={(e) => setPriority(e.target.value as PriorityLevel)}
-                    className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                    className="w-full px-2.5 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                   >
                     <option value="high">High</option>
                     <option value="medium">Medium</option>
@@ -458,7 +469,7 @@ export const TasksView: React.FC<TasksViewProps> = ({
                     required
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full px-2.5 py-2 text-xs bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none font-mono"
+                    className="w-full px-2 py-2.5 text-xs bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none font-mono"
                   />
                 </div>
               </div>
@@ -473,12 +484,12 @@ export const TasksView: React.FC<TasksViewProps> = ({
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Chapter numbers, submission link, or revision focus..."
-                  className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:border-blue-700 focus:outline-none"
+                  className="w-full px-3 py-2.5 text-sm bg-violet-50/40 border border-violet-200 rounded-2xl focus:bg-white focus:border-violet-600 focus:outline-none"
                 />
               </div>
 
               {formError && (
-                <div className="p-2.5 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700">
+                <div className="p-2.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-700">
                   {formError}
                 </div>
               )}
@@ -487,14 +498,14 @@ export const TasksView: React.FC<TasksViewProps> = ({
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg"
+                  className="px-4 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-4 py-2 text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 disabled:opacity-60 rounded-lg"
+                  className="px-4 py-2 text-xs font-semibold text-white bg-violet-600 hover:bg-violet-700 disabled:opacity-60 rounded-xl"
                 >
                   {saving ? 'Saving...' : editingTask ? 'Save Changes' : 'Add Task'}
                 </button>
